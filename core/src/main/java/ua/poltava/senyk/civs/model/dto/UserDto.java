@@ -4,6 +4,7 @@
  */
 package ua.poltava.senyk.civs.model.dto;
 
+import net.sf.json.JSONObject;
 import ua.poltava.senyk.civs.model.UserRole;
 
 /**
@@ -23,6 +24,16 @@ public class UserDto extends MessageDto {
 		this.id = 0L;
 	}
 
+	@Override
+	public JSONObject getJSON() {
+		JSONObject json = new JSONObject();
+		json.put("id", this.getId());
+		json.put("login", this.getLogin());
+		json.put("role", this.getRole());
+		json.put("enabled", this.isEnabled());
+		return json;
+	}
+	
 	public long getId() {
 		return id;
 	}

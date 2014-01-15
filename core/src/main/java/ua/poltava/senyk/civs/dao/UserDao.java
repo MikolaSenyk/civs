@@ -38,6 +38,12 @@ public class UserDao extends Dao<User> {
 		return (User) list.get(0);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<User> findUsers() throws Exception {
+		Query query = getEntityManager().createNamedQuery("Users.findAllUsers");
+		return query.getResultList();
+	}
+	
 	public User doLogin(String login, String passwd) throws Exception {
 		Query query = getEntityManager().createNamedQuery("Users.doLogin");
 		query.setParameter("login", login);

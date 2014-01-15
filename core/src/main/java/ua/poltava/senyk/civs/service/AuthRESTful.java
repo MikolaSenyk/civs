@@ -7,6 +7,7 @@ package ua.poltava.senyk.civs.service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,10 +161,19 @@ public class AuthRESTful {
 	 */
 	@RequestMapping(value="list", produces="application/json; charset=utf-8")
 	@ResponseBody
-	protected String usersList(HttpServletRequest req, HttpServletResponse res) {
-		// TODO implement
-		
-		return "";
+	protected String usersList(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = getLoggedUser(req.getSession());
+		if ( authUser.getRole() == UserRole.ADMIN ) {
+			JSONArray users = new JSONArray();
+			for (UserDto user: _authService.findUsers()) {
+				users.add(user.getJSON());
+			}
+			json.put("items", users);
+		} else {
+			json = JsonUtils.buildErrorMessage("Auth failed");
+		}
+		return json.toString() + "\n";
 	}
 	
 	/**

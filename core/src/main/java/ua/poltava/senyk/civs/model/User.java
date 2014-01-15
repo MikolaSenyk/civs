@@ -29,6 +29,10 @@ import javax.persistence.Table;
 	@NamedQuery(
 		name = "Users.doLogin",
 		query = "SELECT u FROM User u WHERE u.login = :login AND u.passwd = :passwd AND u.enabled = TRUE"
+	),
+	@NamedQuery(
+		name = "Users.findAllUsers",
+		query = "SELECT u FROM User u"
 	)
 })
 public class User implements Serializable {

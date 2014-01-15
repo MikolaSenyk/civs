@@ -4,6 +4,8 @@
  */
 package ua.poltava.senyk.civs.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,5 +44,16 @@ public class AuthService {
 		User user = _userDao.getUserById(userId);
 		ObjectHelper helper = new ObjectHelper();
 		return helper.getUser(user);
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public List<UserDto> findUsers() throws Exception {
+		List<User> users = _userDao.findUsers();
+		ObjectHelper helper = new ObjectHelper();
+		List<UserDto> dtoUsers = new ArrayList<UserDto>(users.size());
+		for (User user: users) {
+			dtoUsers.add(helper.getUser(user));
+		}
+		return dtoUsers;
 	}
 }
