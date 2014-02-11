@@ -1,0 +1,21 @@
+<h3>{{ title }}</h3>
+<a ng-href="#/list">Back to list</a>
+<hr>
+<p ng-show="errorText">{{ errorText }}</p>
+<form ng-submit="submit()">
+	Title:<br>
+	<input type="text" ng-model="todo.title"><br>
+
+	Description:<br>
+	<textarea rows="3" ng-model="todo.description"></textarea><br>
+
+	Priority:<br>
+	<select ng-model="todo.priority" ng-options="pr for pr in priorities"></select><br>
+
+	<div ng-hide="addMode">
+		Status:<br>
+		<select ng-model="todo.status" ng-options="st for st in statuses"></select><br>
+	</div>
+
+	<input type="submit" value="{{submitBtnText}}"><br>
+</form>

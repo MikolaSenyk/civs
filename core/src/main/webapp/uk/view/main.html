@@ -1,0 +1,36 @@
+<div class="container">
+	
+	<nav class="navbar navbar-default" role="navigation">
+	  <!-- Brand and toggle get grouped for better mobile display -->
+	  <div class="navbar-header">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mm-navbar-collapse">
+	      <span class="sr-only">Розгорнути меню</span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <a class="navbar-brand" ng-href="#/">Головна</a>
+	  </div>
+
+	  <!-- Collect the nav links, forms, and other content for toggling -->
+	  <div class="collapse navbar-collapse" id="mm-navbar-collapse">
+	    <ul class="nav navbar-nav">
+	      <li><a href="#">Наша місія</a></li>
+	      <li><a href="#">Допомога</a></li>
+	      <li><a href="#">Контакти</a></li>
+	      <li class="divider"></li>
+	      <li ng-show="auth.isAdmin"><a href="#/admin/">Адмін панель</a></li>
+	      <li ng-show="auth.isUser"><a href="#/cabinet">Особистий кабінет</a></li>
+	    </ul>
+	    <div class="navbar-right" ng-include="auth.view"></div>
+	  </div><!-- /.navbar-collapse -->
+	</nav>
+
+  <div class="page-header">
+    <h1>{{ title }}<small> {{ subTitle }}</small></h1>
+  </div>
+  <p>TODO тут буде стіна</p>
+  <p>TODO а тут нижній колонтитул</p>
+</div>
+
+

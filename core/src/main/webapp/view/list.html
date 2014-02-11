@@ -1,0 +1,12 @@
+<h1>{{ title }}</h1>
+<p><a ng-href="#/logout">Log Out</a></p>
+<hr>
+<ol>
+	<li ng-repeat="todo in todoList.items">
+		<a ng-href="#/edit/{{todo.id}}"><span ng-class="{todoDone: todo.status == 'DONE'}">{{ todo.title }}</span></a>
+		<span title="priority">( {{ todo.priority}} )</span>
+		<button ng-click="removeItem($index)">Remove</button>
+	</li>
+</ol>
+
+<p><a ng-href="#/add">Add ToDo</a></p>

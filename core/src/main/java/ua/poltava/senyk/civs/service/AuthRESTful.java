@@ -26,7 +26,7 @@ import ua.poltava.senyk.civs.utils.JsonUtils;
  * @author mikola
  */
 @Controller
-@RequestMapping(value="users")
+@RequestMapping(value="auth")
 public class AuthRESTful {
 	
 	// HTTP session name for holding UserDto object of authenticated user
@@ -58,7 +58,7 @@ public class AuthRESTful {
 	@RequestMapping(value="status", produces="text/plain; charset=utf-8")
 	@ResponseBody
 	protected String status(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		return "Users service is ready\n";
+		return "Auth service is ready\n";
 	}
 	
 	@RequestMapping(value="login", produces="application/json; charset=utf-8")
@@ -147,29 +147,6 @@ public class AuthRESTful {
 			} catch(Exception e) {
 				json = JsonUtils.buildErrorMessage(e.getMessage());
 			}
-		} else {
-			json = JsonUtils.buildErrorMessage("Auth failed");
-		}
-		return json.toString() + "\n";
-	}
-	
-	/**
-	 * Get list of registered users
-	 * @param req
-	 * @param res
-	 * @return 
-	 */
-	@RequestMapping(value="list", produces="application/json; charset=utf-8")
-	@ResponseBody
-	protected String usersList(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		JSONObject json = JsonUtils.buildSuccessMessage();
-		UserDto authUser = getLoggedUser(req.getSession());
-		if ( authUser.getRole() == UserRole.ADMIN ) {
-			JSONArray users = new JSONArray();
-			for (UserDto user: _authService.findUsers()) {
-				users.add(user.getJSON());
-			}
-			json.put("items", users);
 		} else {
 			json = JsonUtils.buildErrorMessage("Auth failed");
 		}

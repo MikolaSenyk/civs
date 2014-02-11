@@ -1,0 +1,32 @@
+<div class="row">
+	<div class="col-lg-6">
+		<h2>Увага!</h2>
+		<p>Наразі реєстрація на сайті обмежена. Крім ваших особистих даних ви маєте вказати секретний "Реєстраційний код",
+		 який можна отримати у координатора системи.</p>
+	</div>
+	<div class="col-lg-6">
+		<div ng-show="error" class="alert alert-warning">{{ error }}</div>
+		<form role="form" ng-submit="submit()">
+			<div class="form-group">
+			  <label for="code">Реєстраційний код</label>
+			  <input type="text" class="form-control" id="code" ng-model="code" placeholder="Введіть реєстраційний код" ng-pattern="/\d+/" required>
+			</div>
+		  <div class="form-group">
+		    <label for="login">Логін</label>
+		    <input type="text" class="form-control" id="login" ng-model="login" placeholder="Введіть логін" required>
+		  </div>
+		  <div class="form-group">
+		    <label for="passwd">Пароль</label>
+		    <input type="password" class="form-control" id="passwd" ng-model="passwd" placeholder="Введіть пароль" required>
+		  </div>
+		  <div class="form-group">
+		    <label for="passwdCheck">Пароль ще раз</label>
+		    <input type="password" class="form-control" id="passwdCheck" ng-model="passwdCheck" placeholder="Повторіть пароль" required>
+		  </div>
+		  <button type="submit" class="btn btn-primary">Зареєструватися</button>
+		</form>		
+	</div>
+</div>
+
+
+

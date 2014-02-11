@@ -1,0 +1,14 @@
+<div ng-show="error" class="alert alert-warning">{{ error }}</div>
+<form role="form" ng-submit="submit()">
+  <div class="form-group">
+    <label for="login">Логін</label>
+    <input type="text" class="form-control" id="login" ng-model="login" placeholder="Введіть Ваш логін">
+  </div>
+  <div class="form-group">
+    <label for="passwd">Пароль</label>
+    <input type="password" class="form-control" id="passwd" ng-model="passwd" placeholder="Введіть Ваш пароль">
+  </div>
+  <button type="submit" class="btn btn-primary">Увійти</button>
+</form>
+<hr>
+<p>Якщо Ви ще не зареєстровані у системі - <a class="btn btn-primary" ng-href="#/auth/register">Реєстрація</a></p>
