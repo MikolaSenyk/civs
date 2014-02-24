@@ -1,5 +1,5 @@
 <div class="container">
-	
+
 	<nav class="navbar navbar-default" role="navigation">
 	  <!-- Brand and toggle get grouped for better mobile display -->
 	  <div class="navbar-header">
@@ -9,18 +9,14 @@
 	      <span class="icon-bar"></span>
 	      <span class="icon-bar"></span>
 	    </button>
-	    <a class="navbar-brand" ng-href="#/">Головна</a>
+	    <a class="navbar-brand" ng-href="#/"><span class="glyphicon glyphicon-home"></span></a>
 	  </div>
 
 	  <!-- Collect the nav links, forms, and other content for toggling -->
 	  <div class="collapse navbar-collapse" id="mm-navbar-collapse">
 	    <ul class="nav navbar-nav">
-	      <li ng-class="{active: isActive_mision}"><a href="#/mision">Наша місія</a></li>
-	      <li ng-class="{active: isActive_help}"><a href="#/help">Допомога</a></li>
-	      <li ng-class="{active: isActive_contacts}"><a href="#/contacts">Контакти</a></li>
-	      <li class="divider"></li>
-	      <li ng-show="auth.isAdmin"><a href="#/admin/">Адмін панель</a></li>
-	      <li ng-show="auth.isUser"><a href="#/user/cabinet">Особистий кабінет</a></li>
+	      <li ng-class="{active: isActive_cabinet}"><a href="#/user/cabinet">Кабінет</a></li>
+	      <li ng-class="{active: isActive_assistances}"><a href="#/user/assistances">Мій внесок</a></li>
 	    </ul>
 	    <div class="navbar-right" ng-include="auth.view"></div>
 	  </div><!-- /.navbar-collapse -->
@@ -30,7 +26,4 @@
     <h1>{{ title }}<small> {{ subTitle }}</small></h1>
   </div>
   <div ng-include="view"></div>
-  <p>TODO а тут нижній колонтитул</p>
 </div>
-
-

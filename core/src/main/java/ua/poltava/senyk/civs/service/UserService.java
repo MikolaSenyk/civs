@@ -25,7 +25,7 @@ public class UserService {
 	private UserDao _userDao;
 
 	@Transactional(rollbackFor = Exception.class)
-	public UserDto findUser(Long userId, AuthService authService) throws Exception {
+	public UserDto findUser(Long userId) throws Exception {
 		User user = _userDao.getUserById(userId);
 		ObjectHelper helper = new ObjectHelper();
 		return helper.getUser(user);
@@ -41,5 +41,29 @@ public class UserService {
 		}
 		return dtoUsers;
 	}
-		
+	
+	@Transactional(rollbackFor = Exception.class)
+	public void blockUser(long userId) throws Exception {
+		User user = _userDao.getUserById(userId);
+		if ( user != null ) {
+			user.setEnabled(false);
+			_userDao.updateObject(user);
+		}
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public void unblockUser(long userId) throws Exception {
+		User user = _userDao.getUserById(userId);
+		if ( user != null ) {
+			user.setEnabled(true);
+			_userDao.updateObject(user);
+		}
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public void removeUser(long userId) throws Exception {
+		User user = _userDao.getUserById(userId);
+		if ( user != null ) _userDao.deleteObject(user);
+	}
+	
 }

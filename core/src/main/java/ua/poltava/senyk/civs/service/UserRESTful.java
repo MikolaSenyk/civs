@@ -10,7 +10,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ua.poltava.senyk.civs.model.UserRole;
 import ua.poltava.senyk.civs.model.dto.UserDto;
@@ -52,6 +54,57 @@ public class UserRESTful {
 				users.add(user.getJSON());
 			}
 			json.put("items", users);
+		} else {
+			json = JsonUtils.buildErrorMessage("Auth failed");
+		}
+		return json.toString() + "\n";
+	}
+	
+	@RequestMapping(value="{userId}/block", method = RequestMethod.PUT, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String blockUser(HttpServletRequest req, @PathVariable Long userId) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+		if (authUser.getRole() == UserRole.ADMIN) {
+			try {
+				_userService.blockUser(userId);
+			} catch(Exception e) {
+				json = JsonUtils.buildErrorMessage("Unable block user: " + e.getMessage());
+			}
+		} else {
+			json = JsonUtils.buildErrorMessage("Auth failed");
+		}
+		return json.toString() + "\n";
+	}
+	
+	@RequestMapping(value="{userId}/unblock", method = RequestMethod.PUT, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String unblockUser(HttpServletRequest req, @PathVariable Long userId) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+		if (authUser.getRole() == UserRole.ADMIN) {
+			try {
+				_userService.unblockUser(userId);
+			} catch(Exception e) {
+				json = JsonUtils.buildErrorMessage("Unable unblock user: " + e.getMessage());
+			}
+		} else {
+			json = JsonUtils.buildErrorMessage("Auth failed");
+		}
+		return json.toString() + "\n";
+	}
+	
+	@RequestMapping(value="{userId}", method = RequestMethod.DELETE, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String removeUser(HttpServletRequest req, @PathVariable Long userId) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+		if (authUser.getRole() == UserRole.ADMIN) {
+			try {
+				_userService.removeUser(userId);
+			} catch(Exception e) {
+				json = JsonUtils.buildErrorMessage("Unable to remove user: " + e.getMessage());
+			}
 		} else {
 			json = JsonUtils.buildErrorMessage("Auth failed");
 		}

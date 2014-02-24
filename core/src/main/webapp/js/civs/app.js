@@ -7,7 +7,7 @@ var civsApp = angular.module('civsApp', []);
 civsApp.config(function($routeProvider, $httpProvider) {
 	// routes
 	$routeProvider.
-	when('/', {
+	when('/:action', {
 		controller: "MainCtrl",
 		templateUrl: 'view/main.html',
 		resolve: {
@@ -20,9 +20,14 @@ civsApp.config(function($routeProvider, $httpProvider) {
 		controller: "AuthCtrl",
 		templateUrl: 'view/auth.html'
 	}).
-	when('/user', {
+	when('/user/:action', {
 		controller: "UserCtrl",
-		templateUrl: 'view/user.html'
+		templateUrl: 'view/user.html',
+		resolve: {
+			chechAuth: function(CheckAuth) {
+				return CheckAuth();
+			}
+		}
 	}).
 	when('/admin/:action', {
 		controller: "AdminCtrl",
