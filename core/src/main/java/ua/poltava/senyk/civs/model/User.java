@@ -5,6 +5,7 @@
 package ua.poltava.senyk.civs.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Entity of user
@@ -44,6 +47,9 @@ public class User implements Serializable {
     @Column(name = "id")
     @GeneratedValue
     private long id;
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_time", nullable = false)
+	private Date createTime;
 	@Column(name = "login", nullable = false, length = 32)
     private String login;
 	@Column(name = "passwd", nullable = false, length = 32)
@@ -56,6 +62,7 @@ public class User implements Serializable {
 
 	public User() {
 		this.id = 0L;
+		this.createTime = new Date(); // FIXME use GMT+0
 	}
 
 	public User(String login, String passwd) {
@@ -78,6 +85,14 @@ public class User implements Serializable {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public String getPasswd() {

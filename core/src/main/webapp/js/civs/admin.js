@@ -12,16 +12,19 @@ civsApp.factory("UsersFactory", function($http) {
  	};
  	users.getList = function(callback) {
  		$http.get(this.config.apiUrl + 'list').success(callback);
- 	}
+ 	};
  	users.blockUser = function(userId) {
  		$http.put(this.config.apiUrl + userId + '/block');
- 	}
+ 	};
  	users.unblockUser = function(userId) {
  		$http.put(this.config.apiUrl + userId + '/unblock');
- 	}
+ 	};
  	users.removeUser = function(userId) {
  		$http.delete(this.config.apiUrl + userId);
- 	}
+ 	};
+ 	users.getInfo = function(callback) {
+ 		$http.get(this.config.apiUrl + 'get').success(callback);
+ 	};
 
  	return users;
 });
@@ -37,7 +40,7 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
 
  	if ( AuthFactory.isAdmin() ) {
  		$scope['isActive_'+$scope.action] = true;
- 		
+
  		if ( $scope.action == "" ) {
  			// Dashboard
  			$scope.view = 'view/admin/dashboard.html';

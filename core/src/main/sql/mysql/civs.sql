@@ -21,11 +21,12 @@ CREATE TABLE `reg_options` (
 
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL auto_increment,
+  `create_time` timestamp NOT NULL default NOW(),
   `login` varchar(32) NOT NULL,
   `passwd` varchar(32) NOT NULL COLLATE utf8_bin,
   `role` char(5) NOT NULL default 'USER',
   `enabled` bool NOT NULL default 1,
-  `full_name` varchar(64),
+  `options` varchar(2048) default '{}',
   PRIMARY KEY  (`id`),
   CONSTRAINT `u_uni_login` UNIQUE KEY (`login`)
 ) ENGINE=InnoDB COMMENT="Registered users";

@@ -1,3 +1,7 @@
 body {
 	background-color: #dddddd;
 }
+
+div#mainView {
+	min-height: 400px;
+}

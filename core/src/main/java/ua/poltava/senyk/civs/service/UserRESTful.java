@@ -99,7 +99,7 @@ public class UserRESTful {
 	protected String removeUser(HttpServletRequest req, @PathVariable Long userId) throws Exception {
 		JSONObject json = JsonUtils.buildSuccessMessage();
 		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
-		if (authUser.getRole() == UserRole.ADMIN) {
+		if ( authUser.getRole() == UserRole.ADMIN ) {
 			try {
 				_userService.removeUser(userId);
 			} catch(Exception e) {
@@ -107,6 +107,24 @@ public class UserRESTful {
 			}
 		} else {
 			json = JsonUtils.buildErrorMessage("Auth failed");
+		}
+		return json.toString() + "\n";
+	}
+	
+	@RequestMapping(value="get", produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String getUser(HttpServletRequest req) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+		if ( authUser.getRole() == UserRole.USER ) {
+			try {
+				UserDto userDto = _userService.findUser(authUser.getId());
+				json.put("info", userDto.getJSON());
+			} catch(Exception e) {
+				json = JsonUtils.buildErrorMessage("Unable to get user info: " + e.getMessage());
+			}
+		} else {
+			json = JsonUtils.buildErrorMessage("User auth required");
 		}
 		return json.toString() + "\n";
 	}
