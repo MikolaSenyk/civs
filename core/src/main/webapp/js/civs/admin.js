@@ -3,7 +3,20 @@
  * Admin panel controller
  */
 
-civsApp.controller('AdminCtrl', function ($scope, $route, $http, $location, AuthFactory) {
+// FIXME move somewhere
+civsApp.factory("UsersFactory", function($http) {
+ 	console.log("UsersFactory init");
+ 	var users = {};
+ 	users.config = {
+ 		apiUrl: "/core/s/users/"
+ 	};
+ 	users.getList = function(callback) {
+ 		$http.get(this.config.apiUrl + 'list').success(callback);
+ 	}
+ 	return users;
+});
+
+civsApp.controller('AdminCtrl', function ($scope, $route, $location, AuthFactory, UsersFactory) {
 	$scope.title = "Адмін панель";
  	$scope.subTitle = "режим адміністратора";
  	$scope.action = $route.current.params.action;
@@ -32,11 +45,19 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $http, $location, Auth
  			// users
  			$scope.view = 'view/admin/users.html';
  			$scope.isLoading = true;
+ 			$scope.isError = false;
+ 			$scope.search = '';
  			$scope.userList = [];
  			// TODO do load users
- 			//$scope.isLoading = false;
 
-
+ 			UsersFactory.getList(function(json) {
+ 				$scope.isLoading = false;
+ 				if ( json.success ) {
+ 					$scope.userList  = json.items;
+ 				} else {
+ 					$scope.isError = true;
+ 				}
+ 			});
  		} else {
  			$scope.view = 'view/403.html';	
  		}

@@ -26,6 +26,8 @@ public class UserRESTful {
 	
 	@Autowired
 	private UserService _userService;
+	@Autowired
+	private AuthRESTful _authRESTful;
 	
 	@RequestMapping(value="status", produces="text/plain; charset=utf-8")
 	@ResponseBody
@@ -39,12 +41,14 @@ public class UserRESTful {
 	 * @param res
 	 * @return
 	 */
-	protected String usersList(HttpServletRequest req, HttpServletResponse res, AuthRESTful authRESTful) throws Exception {
+	@RequestMapping(value="list", produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String usersList(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		JSONObject json = JsonUtils.buildSuccessMessage();
-		UserDto authUser = authRESTful.getLoggedUser(req.getSession());
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
 		if (authUser.getRole() == UserRole.ADMIN) {
 			JSONArray users = new JSONArray();
-			for (UserDto user: _userService .findUsers()) {
+			for (UserDto user: _userService.findUsers()) {
 				users.add(user.getJSON());
 			}
 			json.put("items", users);
