@@ -4,32 +4,8 @@
  */
 
 // FIXME move somewhere
-civsApp.factory("UsersFactory", function($http) {
- 	console.log("UsersFactory init");
- 	var users = {};
- 	users.config = {
- 		apiUrl: "/core/s/users/"
- 	};
- 	users.getList = function(callback) {
- 		$http.get(this.config.apiUrl + 'list').success(callback);
- 	};
- 	users.blockUser = function(userId) {
- 		$http.put(this.config.apiUrl + userId + '/block');
- 	};
- 	users.unblockUser = function(userId) {
- 		$http.put(this.config.apiUrl + userId + '/unblock');
- 	};
- 	users.removeUser = function(userId) {
- 		$http.delete(this.config.apiUrl + userId);
- 	};
- 	users.getInfo = function(callback) {
- 		$http.get(this.config.apiUrl + 'get').success(callback);
- 	};
 
- 	return users;
-});
-
-civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory) {
+civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AgFactory) {
 	$scope.title = "Адмін панель";
  	$scope.subTitle = "режим адміністратора";
  	$scope.action = $route.current.params.action;
@@ -92,6 +68,17 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  					$scope.isError = true;
  				}
  			});
+ 		} else if ( $scope.action == "groups" ) {
+ 			// assistance groups
+ 			$scope.view = 'view/admin/groups.html';
+ 			$scope.groupList = [];
+ 			// TODO load groups
+ 			AgFactory.getList(function (json) {
+ 				if ( json.success ) {
+ 					$scope.groupList = json.items;
+ 				}
+ 			});
+
  		} else {
  			$scope.view = 'view/403.html';	
  		}

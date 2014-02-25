@@ -22,7 +22,7 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			$scope.title = "Особистий кабінет";
  			$scope.view = 'view/user/cabinet.html?v=3';
  			$scope.user = {
- 				login: $scope.auth.login,
+ 				login: '',
  				createTime: '',
  				firstName: '',
  				middleName: '',

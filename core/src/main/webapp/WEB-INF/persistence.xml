@@ -9,6 +9,8 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
     <class>ua.poltava.senyk.civs.model.User</class>
+	<class>ua.poltava.senyk.civs.model.RegOption</class>
+	<class>ua.poltava.senyk.civs.model.AssistanceGroup</class>
     
     <properties>
 

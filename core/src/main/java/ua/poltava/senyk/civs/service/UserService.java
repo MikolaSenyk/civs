@@ -19,7 +19,7 @@ import ua.poltava.senyk.civs.model.dto.UserDto;
  */
 public class UserService {
 	
-	static private Logger logger = Logger.getLogger(UserService.class);
+	private static Logger logger = Logger.getLogger(UserService.class);
 	
 	@Autowired
 	private UserDao _userDao;

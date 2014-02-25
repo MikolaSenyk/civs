@@ -4,8 +4,10 @@
  */
 package ua.poltava.senyk.civs.service;
 
+import ua.poltava.senyk.civs.model.AssistanceGroup;
 import ua.poltava.senyk.civs.model.Task;
 import ua.poltava.senyk.civs.model.User;
+import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
 import ua.poltava.senyk.civs.model.dto.TaskDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
 
@@ -40,6 +42,16 @@ public class ObjectHelper {
 			o.setDescription(task.getDescription());
 			o.setStatus(task.getStatus());
 			o.setSuccess(true);
+		}
+		return o;
+	}
+	
+	public AssistanceGroupDto getAssistanceGroup(AssistanceGroup group) {
+		AssistanceGroupDto o = new AssistanceGroupDto();
+		if ( group != null ) {
+			o.setId(group.getId());
+			o.setName(group.getName());
+			o.setReadOnly(group.isReadOnly());
 		}
 		return o;
 	}

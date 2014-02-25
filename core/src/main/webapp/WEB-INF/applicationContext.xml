@@ -51,7 +51,9 @@
 	
 	<bean id="userService" class="ua.poltava.senyk.civs.service.UserService" />
 	<bean id="authService" class="ua.poltava.senyk.civs.service.AuthService" />
+	<bean id="assistanceService" class="ua.poltava.senyk.civs.service.AssistanceService" />
 	<bean id="todoService" class="ua.poltava.senyk.civs.service.ToDoService" />
+	
 	
 
 </beans>

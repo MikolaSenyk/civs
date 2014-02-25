@@ -62,3 +62,41 @@ civsApp.config(function($routeProvider, $httpProvider) {
     }
 	$httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
 });
+
+civsApp.factory("UsersFactory", function($http) {
+ 	console.log("UsersFactory init");
+ 	var users = {};
+ 	users.config = {
+ 		apiUrl: "/core/s/users/"
+ 	};
+ 	users.getList = function(callback) {
+ 		$http.get(this.config.apiUrl + 'list').success(callback);
+ 	};
+ 	users.blockUser = function(userId) {
+ 		$http.put(this.config.apiUrl + userId + '/block');
+ 	};
+ 	users.unblockUser = function(userId) {
+ 		$http.put(this.config.apiUrl + userId + '/unblock');
+ 	};
+ 	users.removeUser = function(userId) {
+ 		$http.delete(this.config.apiUrl + userId);
+ 	};
+ 	users.getInfo = function(callback) {
+ 		$http.get(this.config.apiUrl + 'get').success(callback);
+ 	};
+
+ 	return users;
+});
+
+civsApp.factory("AgFactory", function($http) {
+	var ag = {};
+	ag.config = {
+		apiUrl: "/core/s/ags/"
+	};
+	
+	ag.getList = function(callback) {
+ 		$http.get(this.config.apiUrl + 'list').success(callback);
+ 	};
+
+	return ag;
+});

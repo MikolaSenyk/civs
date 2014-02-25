@@ -34,6 +34,7 @@ CREATE TABLE `users` (
 CREATE TABLE `assistance_groups` (
   `id` bigint(20) NOT NULL,
   `name` varchar(32) NOT NULL,
+  `read_only` bool NOT NULL default 0,
   PRIMARY KEY  (`id`),
   CONSTRAINT `u_ag_name` UNIQUE KEY (`name`)
 ) ENGINE=InnoDB COMMENT="Groups of assistance";
