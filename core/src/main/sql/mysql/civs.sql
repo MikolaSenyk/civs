@@ -32,7 +32,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB COMMENT="Registered users";
 
 CREATE TABLE `assistance_groups` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL auto_increment,
   `name` varchar(32) NOT NULL,
   `read_only` bool NOT NULL default 0,
   PRIMARY KEY  (`id`),

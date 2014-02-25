@@ -97,6 +97,13 @@ civsApp.factory("AgFactory", function($http) {
 	ag.getList = function(callback) {
  		$http.get(this.config.apiUrl + 'list').success(callback);
  	};
+ 	ag.createGroup = function(groupName, callback) {
+ 		var p = { name: groupName };
+ 		$http.put(this.config.apiUrl + 'create', p).success(callback);
+ 	};
+ 	ag.removeGroup = function(groupId, callback) {
+ 		$http.put(this.config.apiUrl + groupId + '/remove').success(callback);
+ 	};
 
 	return ag;
 });

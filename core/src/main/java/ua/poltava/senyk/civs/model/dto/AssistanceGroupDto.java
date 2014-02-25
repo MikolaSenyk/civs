@@ -48,6 +48,7 @@ public class AssistanceGroupDto extends MessageDto {
 	@Override
 	public JSONObject getJSON() {
 		JSONObject json = super.getJSON();
+		json.put("id", getId());
 		json.put("name", getName());
 		json.put("readOnly", isReadOnly());
 		return json;

@@ -35,4 +35,27 @@ public class AssistanceService {
 		return dtoGroups;
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
+	public AssistanceGroupDto findGroup(long id) throws Exception {
+		ObjectHelper helper = new ObjectHelper();
+		return helper.getAssistanceGroup(_groupDao.getById(id));
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public AssistanceGroupDto createGroup(String name) throws Exception {
+		ObjectHelper helper = new ObjectHelper();
+		return helper.getAssistanceGroup(_groupDao.addGroup(name));
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public AssistanceGroupDto updateGroup(long id, String name) throws Exception {
+		ObjectHelper helper = new ObjectHelper();
+		return helper.getAssistanceGroup(_groupDao.updateGroup(id, name));
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public void removeGroup(long id) throws Exception {
+		_groupDao.removeGroup(id);
+	}
+	
 }

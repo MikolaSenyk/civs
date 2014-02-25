@@ -52,6 +52,7 @@ public class ObjectHelper {
 			o.setId(group.getId());
 			o.setName(group.getName());
 			o.setReadOnly(group.isReadOnly());
+			o.setSuccess(true);
 		}
 		return o;
 	}

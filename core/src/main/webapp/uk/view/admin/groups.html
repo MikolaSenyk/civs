@@ -10,10 +10,19 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="group in groupList">
-				<td>{{ group.name }}</td>
-				<td><a ng-hide="group.readOnly" ng-click="removeGroup($index)" class="btn btn-link">Видалити</a></td>
+				<td><p>{{ group.name }}</p></td>
+				<td><a ng-hide="group.readOnly" ng-click="removeGroup($index)">Видалити</a></td>
 			</tr>
 		</tbody>
 	</table>
+	<button ng-hide="inAddForm" class="btn btn-primary" ng-click="showAddGroup()">Нова група</button>
+	<form ng-show="inAddForm" role="form" ng-submit="createGroup()">
+		<div class="form-group">
+		  <label for="groupName">Назва групи</label>
+		  <input type="text" class="form-control" id="groupName" required ng-model="currGroup.name" placeholder="Введіть назву нової групи допомоги">
+		</div>
+		<button type="submit" class="btn btn-primary">Зберегти</button>
+		<button type="button" class="btn btn-default" ng-click="hideAddGroup()">Відмінити</button>
+	</form>
 </div>
 

@@ -25,6 +25,26 @@ public class AssistanceGroupDao extends Dao<AssistanceGroup> {
 		return this.getEntityManager().find(AssistanceGroup.class, id);
 	}
 	
+	public AssistanceGroup addGroup(String name) throws Exception {
+		AssistanceGroup group = new AssistanceGroup(name);
+		getEntityManager().persist(group);
+		return group;
+	}
+	
+	public AssistanceGroup updateGroup(long id, String name) throws Exception {
+		AssistanceGroup group = getById(id);
+		if ( group != null ) {
+			group.setName(name);
+			getEntityManager().merge(group);
+		}
+		return group;
+	}
+	
+	public void removeGroup(long id) throws Exception {
+		AssistanceGroup group = getById(id);
+		if ( group != null ) getEntityManager().remove(group);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<AssistanceGroup> findGroups() throws Exception {
 		Query query = getEntityManager().createNamedQuery("AssistanceGroups.findAll");

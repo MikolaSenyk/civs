@@ -72,13 +72,37 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  			// assistance groups
  			$scope.view = 'view/admin/groups.html';
  			$scope.groupList = [];
- 			// TODO load groups
+ 			$scope.inAddForm = false;
+ 			// load groups
  			AgFactory.getList(function (json) {
  				if ( json.success ) {
  					$scope.groupList = json.items;
  				}
  			});
-
+ 			$scope.showAddGroup = function() {
+ 				$scope.currGroup = {
+ 					name: ''
+ 				};
+ 				$scope.inAddForm = true;
+ 			};
+ 			$scope.hideAddGroup = function() {
+ 				$scope.inAddForm = false;
+ 			};
+ 			$scope.createGroup = function() {
+ 				$scope.inAddForm = false;
+ 				AgFactory.createGroup($scope.currGroup.name, function (json) {
+ 					if ( json.success ) {
+ 						$scope.groupList.push(json);
+ 					}
+ 				});	
+ 			};
+ 			$scope.removeGroup = function(index) {
+ 				AgFactory.removeGroup($scope.groupList[index].id, function (json) {
+ 					if ( json.success ) {
+ 						$scope.groupList.splice(index, 1);
+ 					}
+ 				});
+ 			};
  		} else {
  			$scope.view = 'view/403.html';	
  		}
