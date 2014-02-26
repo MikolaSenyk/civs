@@ -8,7 +8,6 @@ import java.util.List;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
-import ua.poltava.senyk.civs.model.User;
 
 /**
  * DAO for assisance groups

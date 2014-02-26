@@ -44,7 +44,7 @@ CREATE TABLE `assistances` (
   `user_id` bigint(20) NOT NULL,
   `create_time` timestamp NOT NULL default NOW(),
   `group_id` bigint(20) NOT NULL,
-  `description` varchar(1024),
+  `description` varchar(1024) NOT NULL,
   PRIMARY KEY  (`id`),
   CONSTRAINT `a_user_key` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT `a_group_key` FOREIGN KEY (`group_id`) REFERENCES assistance_groups(`id`) ON UPDATE CASCADE ON DELETE CASCADE

@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import ua.poltava.senyk.civs.dao.AssistanceDao;
 import ua.poltava.senyk.civs.dao.AssistanceGroupDao;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
@@ -23,6 +24,8 @@ public class AssistanceService {
 	
 	@Autowired
 	private AssistanceGroupDao _groupDao;
+	@Autowired
+	private AssistanceDao _assistanceDao;
 	
 	@Transactional(rollbackFor = Exception.class)
 	public List<AssistanceGroupDto> findGroups() throws Exception {
@@ -55,6 +58,9 @@ public class AssistanceService {
 	
 	@Transactional(rollbackFor = Exception.class)
 	public void removeGroup(long id) throws Exception {
+		// check existing assistance
+		if ( _assistanceDao.isAnyAssistanceByGroupId(id) )
+			throw new Exception("Group isn't empty");
 		_groupDao.removeGroup(id);
 	}
 	

@@ -9,7 +9,7 @@
   </div>
 </form>
 
-<table class="table">
+<table class="table table-hover">
 	<thead>
 		<tr>
 			<th>Логін</th>
@@ -22,13 +22,18 @@
 		<tr ng-repeat="user in userList | filter:search">
 			<td>{{ user.login }} <span ng-hide="user.enabled" class="glyphicon glyphicon-ban-circle"></span></td>
 			<td>{{ user.role }}</td>
-			<td ng-hide="user.role == 'ADMIN'">
-				<a ng-show="user.enabled" ng-click="blockUser(user.id)" class="btn btn-link">Заблокувати</a>
-				<a ng-hide="user.enabled" ng-click="unblockUser(user.id)" class="btn btn-link">Розблокувати</a>
+			<td>
+				<span ng-hide="user.role == 'ADMIN'">
+					<a ng-show="user.enabled" ng-click="blockUser(user.id)" class="btn btn-link">Заблокувати</a>
+					<a ng-hide="user.enabled" ng-click="unblockUser(user.id)" class="btn btn-link">Розблокувати</a>
+				</span>
 			</td>
-			<td ng-hide="user.role == 'ADMIN'"><a ng-hide="user.enabled" ng-click="removeUser(user.id)" class="btn btn-link" title="Видалити користувача з системи">
-				<span class="glyphicon glyphicon-fire"></span> Видалити з системи
-				</a>
+			<td>
+				<span ng-hide="user.role == 'ADMIN'">
+					<a ng-hide="user.enabled" ng-click="removeUser(user.id)" class="btn btn-link" title="Видалити користувача з системи">
+					<span class="glyphicon glyphicon-fire"></span> Видалити з системи
+					</a>
+				</span>
 			</td>
 		</tr>
 
