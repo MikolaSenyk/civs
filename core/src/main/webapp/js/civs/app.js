@@ -1,3 +1,4 @@
+
 /**
  * Civil Society Application
  */
@@ -106,4 +107,18 @@ civsApp.factory("AgFactory", function($http) {
  	};
 
 	return ag;
+});
+
+civsApp.factory("AssistanceFactory", function ($http) {
+	var assistance = {};
+
+	assistance.config = {
+		apiUrl: "/core/s/assistances/"
+	};
+
+	assistance.listByUser = function(callback) {
+		$http.get(this.config.apiUrl + 'listByUser').success(callback);
+	};
+
+	return assistance;
 });

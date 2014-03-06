@@ -4,6 +4,7 @@
  */
 package ua.poltava.senyk.civs.dao;
 
+import java.util.List;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import ua.poltava.senyk.civs.model.Assistance;
@@ -29,6 +30,13 @@ public class AssistanceDao extends Dao<Assistance> {
 		query.setParameter("groupId", groupId);
 		query.setMaxResults(1);
 		return ! query.getResultList().isEmpty();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Assistance> findUserAssistances(long userId) throws Exception {
+		Query query = getEntityManager().createNamedQuery("Assistances.findByUserId");
+		query.setParameter("userId", userId);
+		return query.getResultList();
 	}
 	
 }

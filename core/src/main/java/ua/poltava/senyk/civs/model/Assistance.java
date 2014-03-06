@@ -28,7 +28,10 @@ import javax.persistence.TemporalType;
 @NamedQueries({
 	@NamedQuery(
 			name = "Assistances.findByGroupId",
-			query = "SELECT a FROM Assistance a WHERE a.group.id = :groupId")
+			query = "SELECT a FROM Assistance a WHERE a.group.id = :groupId"),
+	@NamedQuery(
+			name = "Assistances.findByUserId",
+			query = "SELECT a FROM Assistance a WHERE a.user.id = :userId ORDER BY createTime DESC")
 })
 public class Assistance implements Serializable {
 
@@ -49,6 +52,8 @@ public class Assistance implements Serializable {
     private AssistanceGroup group;
 	@Column(name = "description", nullable = false, length = 1024)
 	private String description;
+	@Column(name = "approved", nullable = false, columnDefinition = "bit")
+    private boolean approved;
 
 	public Assistance() {
 		this.id = 0L;
@@ -100,6 +105,14 @@ public class Assistance implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isApproved() {
+		return approved;
+	}
+
+	public void setApproved(boolean approved) {
+		this.approved = approved;
 	}
 	
 }

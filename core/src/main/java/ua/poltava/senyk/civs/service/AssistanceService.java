@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ua.poltava.senyk.civs.dao.AssistanceDao;
 import ua.poltava.senyk.civs.dao.AssistanceGroupDao;
+import ua.poltava.senyk.civs.model.Assistance;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
+import ua.poltava.senyk.civs.model.dto.AssistanceDto;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
 
 /**
@@ -26,6 +28,8 @@ public class AssistanceService {
 	private AssistanceGroupDao _groupDao;
 	@Autowired
 	private AssistanceDao _assistanceDao;
+	
+	// Assistance Groups
 	
 	@Transactional(rollbackFor = Exception.class)
 	public List<AssistanceGroupDto> findGroups() throws Exception {
@@ -62,6 +66,18 @@ public class AssistanceService {
 		if ( _assistanceDao.isAnyAssistanceByGroupId(id) )
 			throw new Exception("Group isn't empty");
 		_groupDao.removeGroup(id);
+	}
+	
+	// Assistances
+	
+	@Transactional(rollbackFor = Exception.class)
+	public List<AssistanceDto> findUserAssistances(long userId) throws Exception {
+		List<AssistanceDto> userAssistances = new ArrayList<AssistanceDto>();
+		ObjectHelper helper = new ObjectHelper();
+		for (Assistance assistance: _assistanceDao.findUserAssistances(userId)) {
+			userAssistances.add(helper.getAssistance(assistance));
+		}
+		return userAssistances;
 	}
 	
 }

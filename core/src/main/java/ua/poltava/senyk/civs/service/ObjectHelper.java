@@ -4,11 +4,11 @@
  */
 package ua.poltava.senyk.civs.service;
 
+import ua.poltava.senyk.civs.model.Assistance;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
-import ua.poltava.senyk.civs.model.Task;
 import ua.poltava.senyk.civs.model.User;
+import ua.poltava.senyk.civs.model.dto.AssistanceDto;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
-import ua.poltava.senyk.civs.model.dto.TaskDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
 
 
@@ -30,22 +30,7 @@ public class ObjectHelper {
 		}
 		return o;
 	}
-	
-	public TaskDto getTask(Task task) {
-		TaskDto o = new TaskDto();
-		if ( task != null ) {
-			o.setId(task.getId());
-			o.setUser(getUser(task.getUser()));
-			o.setCreateTime(task.getCreateTime());
-			o.setPriority(task.getPriority());
-			o.setTitle(task.getTitle());
-			o.setDescription(task.getDescription());
-			o.setStatus(task.getStatus());
-			o.setSuccess(true);
-		}
-		return o;
-	}
-	
+		
 	public AssistanceGroupDto getAssistanceGroup(AssistanceGroup group) {
 		AssistanceGroupDto o = new AssistanceGroupDto();
 		if ( group != null ) {
@@ -53,6 +38,20 @@ public class ObjectHelper {
 			o.setName(group.getName());
 			o.setReadOnly(group.isReadOnly());
 			o.setSuccess(true);
+		}
+		return o;
+	}
+	
+	public AssistanceDto getAssistance(Assistance assistance) {
+		AssistanceDto o = new AssistanceDto();
+		if ( assistance != null ) {
+			o.setId(assistance.getId());
+			o.setCreateTime(assistance.getCreateTime());
+			o.setDescription(assistance.getDescription());
+			o.setApproved(assistance.isApproved());
+			o.setGroup(getAssistanceGroup(assistance.getGroup()));
+			o.setUser(getUser(assistance.getUser()));
+			o.setSuccess(o.getUser().isSuccess() && o.getGroup().isSuccess());
 		}
 		return o;
 	}

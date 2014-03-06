@@ -1,0 +1,9 @@
+<button class="btn btn-primary">Додати оголошення про допомогу</button>
+
+<h2>Моя допомога</h2>
+<div ng-repeat="assistance in assistanceList">
+	<div class="col-md-3">{{ assistance.createTime }}</div>
+	<div class="col-md-9">{{ assistance.description }}</div>
+</div>
+
+
