@@ -21,6 +21,10 @@ public class UserDto extends MessageDto {
     private String passwd;
 	private UserRole role;
 	private boolean enabled;
+	// options fields
+	private String firstName;
+	private String lastName;
+	private String middleName;
 
 	public UserDto() {
 		super();
@@ -36,6 +40,11 @@ public class UserDto extends MessageDto {
 		json.put("role", this.getRole());
 		json.put("enabled", this.isEnabled());
 		json.put("createTime", DatetimeFormat.getDate(this.createTime));
+		JSONObject optionsJson = new JSONObject();
+		optionsJson.put("firstName", getFirstName());
+		optionsJson.put("lastName", getLastName());
+		optionsJson.put("middleName", getMiddleName());
+		json.put("options", optionsJson);
 		return json;
 	}
 	
@@ -85,6 +94,30 @@ public class UserDto extends MessageDto {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 	
 }

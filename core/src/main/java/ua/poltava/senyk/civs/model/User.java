@@ -59,10 +59,13 @@ public class User implements Serializable {
     private UserRole role;
 	@Column(name = "enabled", nullable = false, columnDefinition = "bit")
     private boolean enabled;
+	@Column(name = "options", nullable = false, length = 2048)
+    private String options;
 
 	public User() {
 		this.id = 0L;
 		this.createTime = new Date(); // FIXME use GMT+0
+		this.options = "{}";
 	}
 
 	public User(String login, String passwd) {
@@ -117,6 +120,14 @@ public class User implements Serializable {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
 	}
 
 }

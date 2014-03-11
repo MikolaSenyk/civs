@@ -37,12 +37,6 @@ public class AuthRESTful {
 	@Autowired
 	private RegOptionDao _regOptionDao;
 	
-	@Deprecated
-	public Long getLoggedUserId(HttpSession session) {
-		UserDto user = getLoggedUser(session);
-		return ( user == null ) ? null : user.getId();
-	}
-	
 	/**
 	 * Get authenticated UserDto instance from HTTP session
 	 * @param session HTTP session

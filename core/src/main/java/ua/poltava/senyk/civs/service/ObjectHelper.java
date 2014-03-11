@@ -4,6 +4,7 @@
  */
 package ua.poltava.senyk.civs.service;
 
+import net.sf.json.JSONObject;
 import ua.poltava.senyk.civs.model.Assistance;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
 import ua.poltava.senyk.civs.model.User;
@@ -21,6 +22,10 @@ public class ObjectHelper {
 	public UserDto getUser(User user) {
 		UserDto o = new UserDto();
 		if ( user != null ) {
+			JSONObject optionsJson = JSONObject.fromObject(user.getOptions());
+			if ( optionsJson.containsKey("firstName") ) o.setFirstName(optionsJson.getString("firstName"));
+			if ( optionsJson.containsKey("lastName") ) o.setLastName(optionsJson.getString("lastName"));
+			if ( optionsJson.containsKey("middleName") ) o.setMiddleName(optionsJson.getString("middleName"));
 			o.setId(user.getId());
 			o.setLogin(user.getLogin());
 			o.setPasswd(user.getPasswd());

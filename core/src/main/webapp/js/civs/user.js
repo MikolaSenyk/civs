@@ -20,7 +20,7 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  		if ( $scope.action == "cabinet" ) {
  			// private cabinet
  			$scope.title = "Особистий кабінет";
- 			$scope.view = 'view/user/cabinet.html?v=3';
+ 			$scope.view = 'view/user/cabinet.html';
  			$scope.user = {
  				login: '',
  				createTime: '',
@@ -28,6 +28,8 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  				middleName: '',
  				lastName: ''
  			};
+
+
  			
 
  			// load user info
@@ -39,10 +41,27 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
 
  			$scope.editProfile = false;
  			$scope.editUserInfo = function(state) {
+ 				if ( state ) {
+ 					$scope.options = {
+ 						firstName: $scope.user.firstName,
+ 						middleName: $scope.user.lastName,
+ 						lastName: $scope.user.middleName
+ 					};	
+ 				}
  				$scope.editProfile = state;
  				console.log('edit=' + state);
  			};
 
+ 			$scope.submit = function() {
+ 				$scope.editUserInfo(false);
+ 				$scope.user = {
+ 					firstName: $scope.options.firstName,
+ 					middleName: $scope.options.lastName,
+ 					lastName: $scope.options.middleName
+ 				};
+ 				// TODO save on server
+ 				
+ 			};
  			
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
