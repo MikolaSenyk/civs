@@ -1,18 +1,19 @@
 <div class="col-md-12">
-	<h2>Особиста інформація</h2>
-	<div ng-hide="editProfile">
+	<div ng-show="visibility.viewProfile">
+		<h2>Особиста інформація</h2>
 		<p>Логін: {{user.login}}</p>
 		<p>Зареєстрований: {{user.createTime}}</p>
-		<p>Ім’я: {{ user.firstName }}</p>
-		<p>По батькові: {{ user.middleName }}</p>
-		<p>Прізвище: {{ user.lastName }}</p>
+		<p>Ім’я: {{ user.options.firstName }}</p>
+		<p>По батькові: {{ user.options.middleName }}</p>
+		<p>Прізвище: {{ user.options.lastName }}</p>
 		<div class="btn-group">
 		  <button type="button" class="btn btn-primary" ng-click="editUserInfo(true)">Редагувати</button>
-		  <button type="button" class="btn btn-default" ng-click="changePassword()" disabled>Змінити пароль</button>
+		  <button type="button" class="btn btn-default" ng-click="changePassword()">Змінити пароль</button>
 		</div>	
 	</div>
-	<div ng-show="editProfile">
-		<form role="form" ng-submit="submit()">
+	<div ng-show="visibility.editProfile">
+		<h2>Редагування особистої інформації</h2>
+		<form role="form" ng-submit="submitProfile()">
 			<div class="form-group">
 			  <label for="firstName">Ім’я</label>
 			  <input type="text" class="form-control" id="firstName" ng-model="options.firstName" placeholder="Введіть ваше ім’я">
@@ -28,5 +29,8 @@
 			<button type="submit" class="btn btn-primary">Зберегти</button>
 			<button type="button" class="btn btn-default" ng-click="editUserInfo(false)">Відмінити</button>
 		</form>
+	</div>
+	<div ng-show="visibility.viewChangePass">
+		<h2>Зміна пароля</h2>
 	</div>
 </div>

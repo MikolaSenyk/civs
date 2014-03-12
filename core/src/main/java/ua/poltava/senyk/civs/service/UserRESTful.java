@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ua.poltava.senyk.civs.model.UserRole;
 import ua.poltava.senyk.civs.model.dto.UserDto;
+import ua.poltava.senyk.civs.utils.HttpUtils;
 import ua.poltava.senyk.civs.utils.JsonUtils;
 
 /**
@@ -122,6 +123,26 @@ public class UserRESTful {
 				json.put("info", userDto.getJSON());
 			} catch(Exception e) {
 				json = JsonUtils.buildErrorMessage("Unable to get user info: " + e.getMessage());
+			}
+		} else {
+			json = JsonUtils.buildErrorMessage("User auth required");
+		}
+		return json.toString() + "\n";
+	}
+	
+	@RequestMapping(value="update", method = RequestMethod.PUT, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String updateUser(HttpServletRequest req) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+		HttpUtils httpUtils = new HttpUtils();
+		if ( authUser != null ) {
+			try {
+				ObjectHelper helper = new ObjectHelper();
+				helper.updateUserOptions(authUser, httpUtils.getRequestBodyString(req));
+				_userService.updateUserOptions(authUser);
+			} catch(Exception e) {
+				json = JsonUtils.buildErrorMessage("Unable to update user's options: " + e.getMessage());
 			}
 		} else {
 			json = JsonUtils.buildErrorMessage("User auth required");

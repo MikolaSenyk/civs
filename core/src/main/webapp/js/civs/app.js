@@ -85,6 +85,9 @@ civsApp.factory("UsersFactory", function($http) {
  	users.getInfo = function(callback) {
  		$http.get(this.config.apiUrl + 'get').success(callback);
  	};
+ 	users.updateOptions = function(options, callback) {
+ 		$http.put(this.config.apiUrl + 'update', options).success(callback);
+ 	};
 
  	return users;
 });

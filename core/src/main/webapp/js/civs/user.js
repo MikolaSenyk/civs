@@ -24,13 +24,17 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			$scope.user = {
  				login: '',
  				createTime: '',
- 				firstName: '',
- 				middleName: '',
- 				lastName: ''
+ 				options: {
+ 					firstName: '',
+ 					middleName: '',
+ 					lastName: ''
+ 				}
  			};
-
-
- 			
+ 			$scope.visibility = {
+ 				viewProfile: true,
+ 				editProfile: false,
+ 				viewChangePass: false
+ 			};
 
  			// load user info
  			UsersFactory.getInfo(function(json) {
@@ -43,25 +47,32 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			$scope.editUserInfo = function(state) {
  				if ( state ) {
  					$scope.options = {
- 						firstName: $scope.user.firstName,
- 						middleName: $scope.user.lastName,
- 						lastName: $scope.user.middleName
- 					};	
+ 						firstName: $scope.user.options.firstName,
+ 						lastName: $scope.user.options.lastName,
+ 						middleName: $scope.user.options.middleName
+ 					}
  				}
- 				$scope.editProfile = state;
+ 				$scope.visibility.editProfile = state;
+ 				$scope.visibility.viewProfile = !state;
  				console.log('edit=' + state);
  			};
 
- 			$scope.submit = function() {
+ 			$scope.submitProfile = function() {
  				$scope.editUserInfo(false);
- 				$scope.user = {
- 					firstName: $scope.options.firstName,
- 					middleName: $scope.options.lastName,
- 					lastName: $scope.options.middleName
- 				};
- 				// TODO save on server
+ 				$scope.user.options = $scope.options;
+ 				// save on server
+ 				UsersFactory.updateOptions($scope.options, function(json) {
+ 					if ( !json.success ) window.alert("Ooops!");
+ 				});
  				
  			};
+
+ 			$scope.changePass = false;
+ 			$scope.changePassword = function() {
+ 				$scope.visibility.viewProfile = false;
+ 				$scope.visibility.viewChangePass = true;
+ 			};
+
  			
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";

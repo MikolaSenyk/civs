@@ -22,10 +22,7 @@ public class ObjectHelper {
 	public UserDto getUser(User user) {
 		UserDto o = new UserDto();
 		if ( user != null ) {
-			JSONObject optionsJson = JSONObject.fromObject(user.getOptions());
-			if ( optionsJson.containsKey("firstName") ) o.setFirstName(optionsJson.getString("firstName"));
-			if ( optionsJson.containsKey("lastName") ) o.setLastName(optionsJson.getString("lastName"));
-			if ( optionsJson.containsKey("middleName") ) o.setMiddleName(optionsJson.getString("middleName"));
+			updateUserOptions(o, user.getOptions());
 			o.setId(user.getId());
 			o.setLogin(user.getLogin());
 			o.setPasswd(user.getPasswd());
@@ -34,6 +31,13 @@ public class ObjectHelper {
 			o.setSuccess(true);
 		}
 		return o;
+	}
+	
+	public void updateUserOptions(UserDto o, String body) {
+		JSONObject optionsJson = JSONObject.fromObject(body);
+		if ( optionsJson.containsKey("firstName") ) o.setFirstName(optionsJson.getString("firstName"));
+		if ( optionsJson.containsKey("lastName") ) o.setLastName(optionsJson.getString("lastName"));
+		if ( optionsJson.containsKey("middleName") ) o.setMiddleName(optionsJson.getString("middleName"));
 	}
 		
 	public AssistanceGroupDto getAssistanceGroup(AssistanceGroup group) {

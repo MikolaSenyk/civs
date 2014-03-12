@@ -66,4 +66,15 @@ public class UserService {
 		if ( user != null ) _userDao.deleteObject(user);
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
+	public void updateUserOptions(UserDto userDto) throws Exception {
+		User user = _userDao.getUserById(userDto.getId());
+		if ( user != null ) {
+			String options = userDto.getJSON().getJSONObject("options").toString();
+			//logger.info("Options: " + options);
+			user.setOptions(options);
+			_userDao.updateObject(user);
+		}
+	}
+	
 }
