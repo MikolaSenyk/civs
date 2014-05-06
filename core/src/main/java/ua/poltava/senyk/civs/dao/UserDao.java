@@ -18,7 +18,7 @@ import ua.poltava.senyk.civs.model.UserRole;
 @Repository
 public class UserDao extends Dao<User> {
 	
-	private Logger logger = Logger.getLogger(UserDao.class);
+	private final Logger logger = Logger.getLogger(UserDao.class);
 
 	public UserDao() {
 		setEntityClass(User.class);

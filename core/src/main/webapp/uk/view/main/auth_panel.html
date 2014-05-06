@@ -1,7 +1,7 @@
 
 <a class="navbar-btn btn btn-primary" ng-hide="auth.isLogged" ng-href="#/auth/login">Увійти</a>
 
-<p class="navbar-text" ng-show="auth.isLogged">Ви зайшли як {{ auth.login }}</p>
+<p class="navbar-text" id="loginInfo" ng-show="auth.isLogged">Ви зайшли як {{ auth.login }}</p>
 <a class="navbar-btn btn btn-primary" ng-show="auth.isLogged" ng-href="#/auth/logout">Вийти</a>
 
 

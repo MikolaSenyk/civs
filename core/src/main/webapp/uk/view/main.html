@@ -1,6 +1,6 @@
 <div class="container">
 	
-	<nav class="navbar navbar-default" role="navigation">
+	<nav class="navbar navbar-inverse" role="navigation">
 	  <!-- Brand and toggle get grouped for better mobile display -->
 	  <div class="navbar-header">
 	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mm-navbar-collapse">
@@ -26,11 +26,13 @@
 	  </div><!-- /.navbar-collapse -->
 	</nav>
 
-  <div class="page-header">
-    <h1>{{ title }}<small> {{ subTitle }}</small></h1>
-  </div>
-  <div ng-include="view" id="mainView"></div>
-  <footer>&copy; 2014 Всі права захищено</footer>
+	<div class="page-header">
+		<h1>{{ title }}<small> {{ subTitle }}</small></h1>
+	</div>
+
+	<div ng-include="view" id="mainView"></div>
+
+	<footer>&copy; 2014 Всі права захищено</footer>
 </div>
 
 

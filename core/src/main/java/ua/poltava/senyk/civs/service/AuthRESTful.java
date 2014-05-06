@@ -30,7 +30,7 @@ public class AuthRESTful {
 	
 	// HTTP session name for holding UserDto object of authenticated user
 	private static final String AUTH_USER_SESSION_NAME = "_authUser";
-	private static Logger logger = Logger.getLogger(AuthRESTful.class);
+	private static final Logger logger = Logger.getLogger(AuthRESTful.class);
 	
 	@Autowired
 	private AuthService _authService;
@@ -119,6 +119,37 @@ public class AuthRESTful {
 			} else {
 				json = JsonUtils.buildErrorMessage("Register was failed");
 			}
+		} catch(Exception e) {
+			json = JsonUtils.buildErrorMessage(e.getMessage());
+		}
+		return json.toString() + "\n";
+	}
+        
+    @RequestMapping(value="changePass", method = RequestMethod.POST, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String changePassword(HttpServletRequest req) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		HttpUtils httpUtils = new HttpUtils();
+		try {
+			String body = httpUtils.getRequestBodyString(req);
+			JSONObject paramsJson = JSONObject.fromObject(body);
+			String oldPass = paramsJson.getString("oldPass");
+            String newPass = paramsJson.getString("newPass");
+                        
+			// validate
+            String errorMsg = null;
+            UserDto user = getLoggedUser(req.getSession());
+            if ( user == null ) errorMsg = "Auth failed";
+            else if ( !oldPass.equals(user.getPasswd()) ) errorMsg = "Wrong old password";
+            else if ( oldPass.equals(newPass) ) errorMsg = "New password the same";
+            else if ( newPass.isEmpty() ) errorMsg = "New password is empty";
+                                                
+			if ( errorMsg != null ) {
+                json = JsonUtils.buildErrorMessage(errorMsg);
+            } else {
+                // set new password
+                _authService.changePassword(user.getId(), newPass);
+            }
 		} catch(Exception e) {
 			json = JsonUtils.buildErrorMessage(e.getMessage());
 		}

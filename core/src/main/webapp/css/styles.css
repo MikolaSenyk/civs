@@ -1,7 +1,14 @@
-body {
-	background-color: #dddddd;
-}
-
 div#mainView {
 	min-height: 400px;
+	background: url(../images/tweed.png);
+	padding: 5px;
 }
+
+body {
+	background: url(../images/leather_texture.png);
+}
+
+#loginInfo {
+	color: #9eff44;
+}
+

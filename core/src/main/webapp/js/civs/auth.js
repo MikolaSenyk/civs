@@ -19,7 +19,7 @@ civsApp.factory("AuthFactory", function($http, $location) {
 	auth.doLogout = function() {
 		auth.isLogged = false;
 		$http.get(this.apiUrl+"logout");
-	}
+	};
 
 	auth.doLogin = function(p, loginFailedFn) {
 		$http.get(this.apiUrl+"login", {params: p}).success(function(json) {
@@ -30,13 +30,19 @@ civsApp.factory("AuthFactory", function($http, $location) {
 				loginFailedFn();
 			}
 		});
-	}
+	};
+
+	auth.changePassword = function(p, cbFunc) {
+		$http.post(this.apiUrl+"changePass", p).success(function (json) {
+			cbFunc(json);
+		});
+	};
 
 	auth.setAuthInfo = function(json) {
 		auth.isLogged = json.success;
 		auth.login = angular.uppercase(json.login);
 		auth.role = json.role;
-	}
+	};
 
 	auth.getAuthInfo = function(view) {
 		console.log("isLogged: " + this.isLogged);
@@ -48,15 +54,15 @@ civsApp.factory("AuthFactory", function($http, $location) {
 			isUser: this.isUser()
 		};
 		return res;
-	}
+	};
 
 	auth.isUser = function() {
 		return ( this.isLogged && this.role == USER_ROLE_NAME );
-	}
+	};
 
 	auth.isAdmin = function() {
 		return ( this.isLogged && this.role == ADMIN_ROLE_NAME );
-	}	
+	};	
 
 	return auth;
 });

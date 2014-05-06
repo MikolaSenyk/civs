@@ -36,4 +36,11 @@ public class AuthService {
 		ObjectHelper helper = new ObjectHelper();
 		return helper.getUser(user);
 	}
+        
+    @Transactional(rollbackFor = Exception.class)
+	public void changePassword(long userId, String pass) throws Exception {
+		User user = _userDao.getUserById(userId);
+        user.setPasswd(pass);
+        _userDao.updateObject(user);
+	}
 }

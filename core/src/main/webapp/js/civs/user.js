@@ -2,8 +2,6 @@
  * Civil Society Application
  * User panel controller
  */
-
-
 civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AssistanceFactory) {
 	$scope.title = "Неавторизований";
  	$scope.subTitle = "режим користувача";
@@ -21,58 +19,11 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			// private cabinet
  			$scope.title = "Особистий кабінет";
  			$scope.view = 'view/user/cabinet.html';
- 			$scope.user = {
- 				login: '',
- 				createTime: '',
- 				options: {
- 					firstName: '',
- 					middleName: '',
- 					lastName: ''
- 				}
- 			};
- 			$scope.visibility = {
- 				viewProfile: true,
- 				editProfile: false,
- 				viewChangePass: false
- 			};
+ 			userCabinet.createDefaults($scope, UsersFactory);
+ 			userCabinet.editProfile($scope, UsersFactory);
+ 			userCabinet.changePassword($scope, AuthFactory);
 
- 			// load user info
- 			UsersFactory.getInfo(function(json) {
- 				if ( json.success ) {
- 					$scope.user = json.info;
- 				}
- 			});
-
- 			$scope.editProfile = false;
- 			$scope.editUserInfo = function(state) {
- 				if ( state ) {
- 					$scope.options = {
- 						firstName: $scope.user.options.firstName,
- 						lastName: $scope.user.options.lastName,
- 						middleName: $scope.user.options.middleName
- 					}
- 				}
- 				$scope.visibility.editProfile = state;
- 				$scope.visibility.viewProfile = !state;
- 				console.log('edit=' + state);
- 			};
-
- 			$scope.submitProfile = function() {
- 				$scope.editUserInfo(false);
- 				$scope.user.options = $scope.options;
- 				// save on server
- 				UsersFactory.updateOptions($scope.options, function(json) {
- 					if ( !json.success ) window.alert("Ooops!");
- 				});
- 				
- 			};
-
- 			$scope.changePass = false;
- 			$scope.changePassword = function() {
- 				$scope.visibility.viewProfile = false;
- 				$scope.visibility.viewChangePass = true;
- 			};
-
+ 			
  			
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
@@ -93,3 +44,91 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  	}
  	
 });
+
+var userCabinet = {
+	/**
+	 * Set "mode" visible and clear others
+	 */
+	mode: function(mode, $scope) {
+		for (var i in $scope.visibility) {
+			$scope.visibility[i] = false;
+		}
+		$scope.visibility[mode] = true;
+	},
+	/**
+	 * Main page of user cabinet
+	 */
+	createDefaults: function($scope, UsersFactory) {
+		$scope.user = {
+			login: '',
+			createTime: '',
+			options: {
+				firstName: '',
+				middleName: '',
+				lastName: ''
+			}
+		};
+		$scope.visibility = {};
+		userCabinet.mode('viewProfile', $scope);
+
+		// load user info
+		UsersFactory.getInfo(function(json) {
+			if ( json.success ) {
+				$scope.user = json.info;
+			}
+		});
+	},
+	/**
+	 * Build edit profile stuff
+	 */
+	editProfile: function($scope, UsersFactory) {
+		$scope.editUserInfo = function(state) {
+			if ( state ) {
+				$scope.options = {
+					firstName: $scope.user.options.firstName,
+					lastName: $scope.user.options.lastName,
+					middleName: $scope.user.options.middleName
+				}
+				userCabinet.mode('editProfile', $scope);
+			} else userCabinet.mode('viewProfile', $scope);
+		};
+
+		$scope.submitProfile = function() {
+			$scope.editUserInfo(false);
+			$scope.user.options = $scope.options;
+			// save on server
+			UsersFactory.updateOptions($scope.options, function(json) {
+				if ( !json.success ) window.alert("Ooops!");
+			});
+			
+		};
+	},
+	/**
+	 * Change password stuff
+	 */
+	changePassword: function($scope, AuthFactory) {
+
+		$scope.changePassword = function(state) {
+			var modeName = 'viewProfile';
+			if ( state ) {
+				modeName = 'viewChangePass';
+				$scope.options = {
+					oldPass: '', newPass: '', newPassAgain: ''
+				}
+			}
+			userCabinet.mode(modeName, $scope);
+		};
+		$scope.submitPassword = function() {
+			// TODO validate
+			
+			$scope.error = '';
+			AuthFactory.changePassword({newPass: $scope.options.newPass, oldPass: $scope.options.oldPass}, function(json) {
+				if ( json.success ) {
+					$scope.changePassword(false);
+				} else {
+					$scope.error = json.messageText;
+				}
+			})
+		};
+	}
+}
