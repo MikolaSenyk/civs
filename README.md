@@ -1,4 +1,4 @@
 civs
 ====
 
-Civil Society Dashboard
+Civil Society - Community project
