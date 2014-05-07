@@ -149,6 +149,7 @@ public class AuthRESTful {
             } else {
                 // set new password
                 _authService.changePassword(user.getId(), newPass);
+                this.doLogIn(user.getLogin(), newPass, req);
             }
 		} catch(Exception e) {
 			json = JsonUtils.buildErrorMessage(e.getMessage());

@@ -6,6 +6,7 @@ package ua.poltava.senyk.civs.model.dto;
 
 import java.util.Date;
 import net.sf.json.JSONObject;
+import ua.poltava.senyk.civs.utils.DatetimeFormat;
 
 /**
  * Assistance DTO
@@ -29,6 +30,7 @@ public class AssistanceDto extends MessageDto {
 	public JSONObject getJSON() {
 		JSONObject json = super.getJSON();
 		json.put("id", getId());
+        json.put("createTime", DatetimeFormat.getDate(getCreateTime()));
 		json.put("userId", getUser().getId());
 		json.put("groupId", getGroup().getId());
 		json.put("description", getDescription());

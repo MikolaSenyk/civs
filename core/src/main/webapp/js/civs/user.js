@@ -7,7 +7,6 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  	$scope.subTitle = "режим користувача";
  	$scope.action = $route.current.params.action;
  	if ( $scope.action == '' ) $scope.action = "cabinet";
- 	
 
  	// add auth block
  	$scope.auth = AuthFactory.getAuthInfo('view/main/auth_panel.html');
@@ -21,10 +20,7 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			$scope.view = 'view/user/cabinet.html';
  			userCabinet.createDefaults($scope, UsersFactory);
  			userCabinet.editProfile($scope, UsersFactory);
- 			userCabinet.changePassword($scope, AuthFactory);
-
- 			
- 			
+ 			userCabinet.changePassword($scope, AuthFactory); 			
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
  			$scope.view = 'view/user/assistances.html';
@@ -34,8 +30,6 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  					$scope.assistanceList = json.items;
  				}
  			});
-
-
  		} else {
  			$scope.view = 'view/403.html';	
  		}

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ua.poltava.senyk.civs.model.dto.AssistanceDto;
-import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
 import ua.poltava.senyk.civs.utils.JsonUtils;
 
