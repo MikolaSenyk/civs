@@ -62,11 +62,7 @@ var userCabinet = {
 		$scope.user = {
 			login: '',
 			createTime: '',
-			options: {
-				firstName: '',
-				middleName: '',
-				lastName: ''
-			}
+			options: jsTools.emptyFields("firstName,middleName,lastName")
 		};
 		$scope.visibility = {};
 		userCabinet.mode('viewProfile', $scope);
@@ -107,22 +103,25 @@ var userCabinet = {
 	 * Change password stuff
 	 */
 	changePassword: function($scope, AuthFactory) {
-
 		$scope.changePassword = function(state) {
-			var modeName = 'viewProfile';
-			if ( state ) {
-				modeName = 'viewChangePass';
-				$scope.options = {
-					oldPass: '', newPass: '', newPassAgain: ''
-				}
-			}
+			$scope.error = '';
+			$scope.pass = jsTools.emptyFields("old,new,newAgain");
+			var modeName = ( state ) ? 'viewChangePass' : 'viewProfile';
 			userCabinet.mode(modeName, $scope);
 		};
-		$scope.submitPassword = function() {
-			// TODO validate
-			
+		$scope.submitPassword = function(pass) {
+			// validate
 			$scope.error = '';
-			AuthFactory.changePassword({newPass: $scope.options.newPass, oldPass: $scope.options.oldPass}, function(json) {
+			if ( ! $scope.pass.old ) {
+				$scope.error = 'Empty old password';
+				return;
+			}
+			if ( $scope.pass.new != $scope.pass.newAgain ) {
+				$scope.error = 'Password mismatch';
+				return;	
+			}
+			// save
+			AuthFactory.changePassword({newPass: $scope.pass.new, oldPass: $scope.pass.old}, function(json) {
 				if ( json.success ) {
 					$scope.changePassword(false);
 				} else {

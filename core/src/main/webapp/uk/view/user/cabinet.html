@@ -36,18 +36,18 @@
 		<div class="col-md-7 col-lg-4">
 		<h2>Зміна пароля</h2>
 			<div ng-show="error" class="alert alert-warning">{{ error }}</div>
-			<form role="form" ng-submit="submitPassword()">
+			<form role="form" ng-submit="submitPassword(pass)">
 				<div class="form-group">
 				  <label for="oldPass">Старий пароль:</label>
-				  <input type="password" class="form-control" id="oldPass" ng-model="options.oldPass" placeholder="Введіть ваш поточний пароль">
+				  <input type="password" class="form-control" id="oldPass" ng-model="pass.old" placeholder="Введіть ваш поточний пароль" required>
 				</div>
 				<div class="form-group">
 				  <label for="newPass">Новий пароль:</label>
-				  <input type="password" class="form-control" id="newPass" ng-model="options.newPass" placeholder="Введіть ваш новий пароль">
+				  <input type="password" class="form-control" id="newPass" ng-model="pass.new" placeholder="Введіть ваш новий пароль" required>
 				</div>
 				<div class="form-group">
 				  <label for="newPassAgain">Новий пароль (ще раз):</label>
-				  <input type="password" class="form-control" id="newPassAgain" ng-model="options.newPassAgain" placeholder="Введіть ваш новий пароль ще раз">
+				  <input type="password" class="form-control" id="newPassAgain" ng-model="pass.newAgain" placeholder="Введіть ваш новий пароль ще раз" required>
 				</div>
 				<button type="submit" class="btn btn-primary">Оновити пароль</button>
 				<button type="button" class="btn btn-default" ng-click="changePassword(false)">Відмінити</button>
