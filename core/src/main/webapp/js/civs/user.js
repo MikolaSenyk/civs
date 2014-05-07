@@ -24,12 +24,8 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
  			$scope.view = 'view/user/assistances.html';
- 			$scope.assistanceList = [];
- 			AssistanceFactory.listByUser(function (json) {
- 				if ( json.success ) {
- 					$scope.assistanceList = json.items;
- 				}
- 			});
+ 			userCabinet.viewAssistances($scope, AssistanceFactory);
+ 			
  		} else {
  			$scope.view = 'view/403.html';	
  		}
@@ -123,5 +119,30 @@ var userCabinet = {
 				}
 			})
 		};
+	},
+	/**
+	 * Show list of user's assistances
+	 */
+	viewAssistances: function($scope, AssistanceFactory) {
+		$scope.assistanceList = [];
+		$scope.showAddAssistanceForm = false;
+		$scope.assistanceGroups = [
+			{ id: 1, name: "Help" },
+			{ id: 2, name: "Teaching" },
+			{ id: 3, name: "Food" }
+		];
+		$scope.assistance = jsTools.emptyFields("text,groupId");
+		AssistanceFactory.listByUser(function (json) {
+			if ( json.success ) {
+				$scope.assistanceList = json.items;
+			}
+		});
+		$scope.addAssistance = function(state) {
+			$scope.showAddAssistanceForm = state;
+
+		};
+		$scope.submitAssistance = function() {
+			console.log('TODO submit assistance: ' + $scope.assistance.text);
+		}
 	}
 }
