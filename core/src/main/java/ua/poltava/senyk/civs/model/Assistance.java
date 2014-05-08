@@ -27,11 +27,14 @@ import javax.persistence.TemporalType;
 @Table(name = "assistances")
 @NamedQueries({
 	@NamedQuery(
+			name = "Assistances.findAll",
+			query = "SELECT a FROM Assistance a ORDER BY a.createTime DESC"),
+    @NamedQuery(
 			name = "Assistances.findByGroupId",
-			query = "SELECT a FROM Assistance a WHERE a.group.id = :groupId"),
+			query = "SELECT a FROM Assistance a WHERE a.group.id = :groupId ORDER BY a.createTime DESC"),
 	@NamedQuery(
 			name = "Assistances.findByUserId",
-			query = "SELECT a FROM Assistance a WHERE a.user.id = :userId ORDER BY createTime DESC")
+			query = "SELECT a FROM Assistance a WHERE a.user.id = :userId ORDER BY a.createTime DESC")
 })
 public class Assistance implements Serializable {
 

@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ua.poltava.senyk.civs.dao.AssistanceDao;
 import ua.poltava.senyk.civs.dao.AssistanceGroupDao;
+import ua.poltava.senyk.civs.dao.UserDao;
 import ua.poltava.senyk.civs.model.Assistance;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
+import ua.poltava.senyk.civs.model.User;
 import ua.poltava.senyk.civs.model.dto.AssistanceDto;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
 
@@ -22,12 +24,14 @@ import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
  */
 public class AssistanceService {
 	
-	private static Logger logger = Logger.getLogger(AssistanceService.class);
+	private static final Logger logger = Logger.getLogger(AssistanceService.class);
 	
 	@Autowired
 	private AssistanceGroupDao _groupDao;
 	@Autowired
 	private AssistanceDao _assistanceDao;
+    @Autowired
+    private UserDao _userDao;
 	
 	// Assistance Groups
 	
@@ -69,6 +73,26 @@ public class AssistanceService {
 	}
 	
 	// Assistances
+    
+    @Transactional(rollbackFor = Exception.class)
+	public List<AssistanceDto> findAllAssistances() throws Exception {
+		List<AssistanceDto> userAssistances = new ArrayList<AssistanceDto>();
+		ObjectHelper helper = new ObjectHelper();
+		for (Assistance assistance: _assistanceDao.findAllAssistances()) {
+			userAssistances.add(helper.getAssistance(assistance));
+		}
+		return userAssistances;
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public List<AssistanceDto> findAssistancesByGroup(long groupId) throws Exception {
+		List<AssistanceDto> userAssistances = new ArrayList<AssistanceDto>();
+		ObjectHelper helper = new ObjectHelper();
+		for (Assistance assistance: _assistanceDao.findAllGroupAssistances(groupId)) {
+			userAssistances.add(helper.getAssistance(assistance));
+		}
+		return userAssistances;
+	}
 	
 	@Transactional(rollbackFor = Exception.class)
 	public List<AssistanceDto> findUserAssistances(long userId) throws Exception {
@@ -78,6 +102,40 @@ public class AssistanceService {
 			userAssistances.add(helper.getAssistance(assistance));
 		}
 		return userAssistances;
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public AssistanceDto getAssistanceById(long assistanceId) throws Exception {
+		Assistance assistance = _assistanceDao.getAssistanceById(assistanceId);        
+		ObjectHelper helper = new ObjectHelper();
+		return helper.getAssistance(assistance);
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public AssistanceDto createAssistance(String text, long groupId, long userId) throws Exception {
+        User user = _userDao.getUserById(userId);
+        AssistanceGroup group = _groupDao.getById(groupId);
+		Assistance assistance = new Assistance(user, group, text);
+        _assistanceDao.addObject(assistance);
+		ObjectHelper helper = new ObjectHelper();
+		return helper.getAssistance(assistance);
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public AssistanceDto updateAssistance(long assistanceId, String text, long groupId, Boolean approved) throws Exception {
+        AssistanceGroup group = _groupDao.getById(groupId);
+		Assistance assistance = _assistanceDao.getAssistanceById(assistanceId);
+        assistance.setDescription(text);
+        assistance.setGroup(group);
+        assistance.setApproved(approved);
+        _assistanceDao.updateObject(assistance);
+		ObjectHelper helper = new ObjectHelper();
+		return helper.getAssistance(assistance);
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public void removeAssistance(long id) throws Exception {
+        _assistanceDao.deleteObject(id);
 	}
 	
 }

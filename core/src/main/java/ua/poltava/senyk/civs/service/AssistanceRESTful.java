@@ -11,10 +11,14 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ua.poltava.senyk.civs.model.UserRole;
 import ua.poltava.senyk.civs.model.dto.AssistanceDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
+import ua.poltava.senyk.civs.utils.HttpUtils;
 import ua.poltava.senyk.civs.utils.JsonUtils;
 
 /**
@@ -58,5 +62,45 @@ public class AssistanceRESTful {
 		}
 		return json.toString() + "\n";
 	}
-	
+    
+    @RequestMapping(value="create", method = RequestMethod.POST, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String create(HttpServletRequest req) {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto user = _authRESTful.getLoggedUser(req.getSession());
+		if ( user.isSuccess() && user.isEnabled() ) {
+            HttpUtils httpUtils = new HttpUtils();
+			try {
+                String body = httpUtils.getRequestBodyString(req);
+                JSONObject paramsJson = JSONObject.fromObject(body);
+                String description = paramsJson.getString("description");
+                long groupId = paramsJson.getLong("groupId");
+				AssistanceDto assistance = _assistanceService.createAssistance(description, groupId, user.getId());
+				json.put("item", assistance.getJSON());
+			} catch (Exception e) {
+				json = JsonUtils.buildErrorMessage("Error: " + e.getMessage());
+			}
+		} else {
+			json = JsonUtils.buildErrorMessage("Auth required");
+		}
+		return json.toString() + "\n";
+	}
+    
+    @RequestMapping(value="{assistanceId}", method = RequestMethod.DELETE, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String remove(HttpServletRequest req, @PathVariable Long assistanceId) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+        try {
+            AssistanceDto assistance = _assistanceService.getAssistanceById(assistanceId);
+            if ( authUser.getRole() == UserRole.ADMIN || assistance.getUser().getId() == authUser.getId() ) {
+                _assistanceService.removeAssistance(assistanceId);
+            } else {
+                json = JsonUtils.buildErrorMessage("Auth failed");
+            }
+        } catch(Exception e) {
+            json = JsonUtils.buildErrorMessage("Unable to remove assistance: " + e.getMessage());
+        }
+		return json.toString() + "\n";
+	}
 }

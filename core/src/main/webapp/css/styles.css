@@ -1,7 +1,7 @@
 div#mainView {
 	min-height: 400px;
+	padding: 8px;
 	background: url(../images/tweed.png);
-	padding: 5px;
 }
 
 body {

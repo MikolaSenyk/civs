@@ -112,6 +112,22 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  					}
  				});
  			};
+ 		} else if ( $scope.action == "assistances" ) {
+ 			// assistances
+ 			var filterNames = { new: 'Нові', all: 'Всі' };
+ 			$scope.view = 'view/admin/assistances.html';
+
+ 			$scope.filter = {
+ 				regime: 'new',
+ 				getName: function() {
+ 					return filterNames[$scope.filter.regime];
+ 				},
+ 				change: function(regime) {
+ 					$scope.filter.regime = regime;
+ 					// TODO load new list
+ 					
+ 				}
+ 			};
  		} else {
  			$scope.view = 'view/403.html';	
  		}

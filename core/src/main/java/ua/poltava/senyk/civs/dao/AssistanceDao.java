@@ -31,12 +31,23 @@ public class AssistanceDao extends Dao<Assistance> {
 		query.setMaxResults(1);
 		return ! query.getResultList().isEmpty();
 	}
+    
+    @SuppressWarnings("unchecked")
+	public List<Assistance> findAllGroupAssistances(long groupId) throws Exception {
+		Query query = getEntityManager().createNamedQuery("Assistances.findByGroupId");
+		query.setParameter("groupId", groupId);
+		return query.getResultList();
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Assistance> findUserAssistances(long userId) throws Exception {
 		Query query = getEntityManager().createNamedQuery("Assistances.findByUserId");
 		query.setParameter("userId", userId);
 		return query.getResultList();
+	}
+    @SuppressWarnings("unchecked")
+	public List<Assistance> findAllAssistances() throws Exception {
+		return getObjectList("Assistances.findAll");
 	}
 	
 }

@@ -123,6 +123,13 @@ civsApp.factory("AssistanceFactory", function ($http) {
 		$http.get(this.config.apiUrl + 'listByUser').success(callback);
 	};
 
+	assistance.create = function(params, callback) {
+		$http.post(this.config.apiUrl + 'create', params).success(callback);
+	};
+	assistance.remove = function(assistanceId, callback) {
+ 		$http.delete(this.config.apiUrl + assistanceId).success(callback);
+ 	};
+
 	return assistance;
 });
 

@@ -2,7 +2,7 @@
  * Civil Society Application
  * User panel controller
  */
-civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AssistanceFactory) {
+civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AssistanceFactory, AgFactory) {
 	$scope.title = "Неавторизований";
  	$scope.subTitle = "режим користувача";
  	$scope.action = $route.current.params.action;
@@ -24,7 +24,7 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
  			$scope.view = 'view/user/assistances.html';
- 			userCabinet.viewAssistances($scope, AssistanceFactory);
+ 			userCabinet.viewAssistances($scope, AssistanceFactory, AgFactory);
  			
  		} else {
  			$scope.view = 'view/403.html';	
@@ -123,26 +123,61 @@ var userCabinet = {
 	/**
 	 * Show list of user's assistances
 	 */
-	viewAssistances: function($scope, AssistanceFactory) {
+	viewAssistances: function($scope, AssistanceFactory, AgFactory) {
 		$scope.assistanceList = [];
 		$scope.showAddAssistanceForm = false;
-		$scope.assistanceGroups = [
-			{ id: 1, name: "Help" },
-			{ id: 2, name: "Teaching" },
-			{ id: 3, name: "Food" }
-		];
-		$scope.assistance = jsTools.emptyFields("text,groupId");
+		$scope.assistanceGroups = [];
+		AgFactory.getList(function(json) {
+			if ( json.success ) {
+				$scope.assistanceGroups = json.items;
+			}
+		});
+		$scope.assistance = jsTools.emptyFields("description,groupId");
 		AssistanceFactory.listByUser(function (json) {
 			if ( json.success ) {
 				$scope.assistanceList = json.items;
 			}
 		});
 		$scope.addAssistance = function(state) {
+			$scope.error = '';
 			$scope.showAddAssistanceForm = state;
 
 		};
-		$scope.submitAssistance = function() {
-			console.log('TODO submit assistance: ' + $scope.assistance.text);
-		}
+		$scope.submitAssistance = function(assistance) {
+			$scope.error = '';
+			// validate
+			if ( !assistance.groupId ) {
+				$scope.error = "Будь ласка, вкажіть групу допомоги";
+				return;
+			}
+			var p = {
+				description: assistance.description,
+				groupId: assistance.groupId
+			};
+			AssistanceFactory.create(p, function(json) {
+				if ( json.success ) {
+					$scope.assistanceList.unshift(json.item);
+					$scope.addAssistance(false);
+
+				} else $scope.error = json.messageText;
+				//console.dir(json);
+			});
+			console.log('TODO submit assistance: ' + assistance.description + ', groupId=' + assistance.groupId);
+		};
+		$scope.removeAssistances = function(id) {
+			if ( window.confirm("Ви впевнені, що бажаєте видалити своє оголошення про допомогу?") ) {
+				AssistanceFactory.remove(id, function(json) {
+					if ( json.success ) {
+						for (var i=0; i<$scope.assistanceList.length; i++) {
+							var currItem = $scope.assistanceList[i];
+							if ( currItem.id == id ) {
+								$scope.assistanceList.splice(i, 1);
+								break;
+							}
+						}
+					}
+				});
+			}
+		};
 	}
 }
