@@ -8,4 +8,21 @@
     <li><a ng-click="filter.change('all')">Всі повідомлення</a></li>
   </ul>
 </div>
-<p>...</p>
+
+<div ng-show="error" class="alert alert-warning">{{ error }}</div>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Дата</th>
+			<th>Опис</th>
+			<th>Дія</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="assistance in list">
+			<td>{{ assistance.createTime }}</td>
+			<td>{{ assistance.description }}</td>
+			<td><a class="btn btn-primary" ng-click="setApproved(assistance.id, true)">Підтвердити</a></td>
+		</tr>
+	</tbody>
+</table>

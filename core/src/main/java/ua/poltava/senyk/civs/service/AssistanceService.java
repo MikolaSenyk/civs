@@ -85,7 +85,17 @@ public class AssistanceService {
 	}
     
     @Transactional(rollbackFor = Exception.class)
-	public List<AssistanceDto> findAssistancesByGroup(long groupId) throws Exception {
+	public List<AssistanceDto> findNotApprovedAssistances() throws Exception {
+		List<AssistanceDto> userAssistances = new ArrayList<AssistanceDto>();
+		ObjectHelper helper = new ObjectHelper();
+		for (Assistance assistance: _assistanceDao.findNotApprovedAssistances()) {
+			userAssistances.add(helper.getAssistance(assistance));
+		}
+		return userAssistances;
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public List<AssistanceDto> findNewAssistancesByGroup(long groupId) throws Exception {
 		List<AssistanceDto> userAssistances = new ArrayList<AssistanceDto>();
 		ObjectHelper helper = new ObjectHelper();
 		for (Assistance assistance: _assistanceDao.findAllGroupAssistances(groupId)) {
@@ -136,6 +146,13 @@ public class AssistanceService {
     @Transactional(rollbackFor = Exception.class)
 	public void removeAssistance(long id) throws Exception {
         _assistanceDao.deleteObject(id);
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public void approveAssistance(long id) throws Exception {
+        Assistance assistance = _assistanceDao.getAssistanceById(id);
+        assistance.setApproved(true);
+        _assistanceDao.updateObject(assistance);
 	}
 	
 }

@@ -49,5 +49,10 @@ public class AssistanceDao extends Dao<Assistance> {
 	public List<Assistance> findAllAssistances() throws Exception {
 		return getObjectList("Assistances.findAll");
 	}
+    
+    @SuppressWarnings("unchecked")
+	public List<Assistance> findNotApprovedAssistances() throws Exception {
+		return getObjectList("Assistances.findNew");
+	}
 	
 }

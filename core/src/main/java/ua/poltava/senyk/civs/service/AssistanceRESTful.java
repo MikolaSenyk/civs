@@ -40,6 +40,40 @@ public class AssistanceRESTful {
 		return "Assistance service is ready\n";
 	}
 	
+    @RequestMapping(value="listAll", produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String listAll() {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+        try {
+            List<AssistanceDto> assistances = _assistanceService.findAllAssistances();
+            JSONArray itemArray = new JSONArray();
+            for (AssistanceDto assistance: assistances) {
+                itemArray.add(assistance.getJSON());
+            }
+            json.put("items", itemArray);
+        } catch (Exception e) {
+            json = JsonUtils.buildErrorMessage("Error: " + e.getMessage());
+        }
+		return json.toString() + "\n";
+	}
+    
+    @RequestMapping(value="listNew", produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String listNew() {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+        try {
+            List<AssistanceDto> assistances = _assistanceService.findNotApprovedAssistances();
+            JSONArray itemArray = new JSONArray();
+            for (AssistanceDto assistance: assistances) {
+                itemArray.add(assistance.getJSON());
+            }
+            json.put("items", itemArray);
+        } catch (Exception e) {
+            json = JsonUtils.buildErrorMessage("Error: " + e.getMessage());
+        }
+		return json.toString() + "\n";
+	}
+    
 	@RequestMapping(value="listByUser", produces="application/json; charset=utf-8")
 	@ResponseBody
 	protected String listByUser(HttpServletRequest req) {
@@ -100,6 +134,23 @@ public class AssistanceRESTful {
             }
         } catch(Exception e) {
             json = JsonUtils.buildErrorMessage("Unable to remove assistance: " + e.getMessage());
+        }
+		return json.toString() + "\n";
+	}
+    
+    @RequestMapping(value="{assistanceId}/approve", method = RequestMethod.PUT, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String approve(HttpServletRequest req, @PathVariable Long assistanceId) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+        try {
+            if ( authUser.getRole() == UserRole.ADMIN ) {
+                _assistanceService.approveAssistance(assistanceId);
+            } else {
+                json = JsonUtils.buildErrorMessage("Auth failed");
+            }
+        } catch(Exception e) {
+            json = JsonUtils.buildErrorMessage("Unable to approve assistance: " + e.getMessage());
         }
 		return json.toString() + "\n";
 	}

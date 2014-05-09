@@ -5,7 +5,7 @@
 
 // FIXME move somewhere
 
-civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AgFactory) {
+civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AgFactory, AssistanceFactory) {
 	$scope.title = "Адмін панель";
  	$scope.subTitle = "режим адміністратора";
  	$scope.action = $route.current.params.action;
@@ -114,18 +114,43 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  			};
  		} else if ( $scope.action == "assistances" ) {
  			// assistances
+
  			var filterNames = { new: 'Нові', all: 'Всі' };
  			$scope.view = 'view/admin/assistances.html';
+ 			$scope.list = [];
 
  			$scope.filter = {
- 				regime: 'new',
+ 				regime: null,
  				getName: function() {
  					return filterNames[$scope.filter.regime];
+ 				},
+ 				load: function(answer) {
+ 					if ( answer.success ) {
+ 						$scope.list = answer.items;
+ 					}
  				},
  				change: function(regime) {
  					$scope.filter.regime = regime;
  					// TODO load new list
- 					
+ 					if ( regime == 'all' ) AssistanceFactory.listAll($scope.filter.load);
+ 					else AssistanceFactory.listNew($scope.filter.load);
+ 				}
+ 			};
+ 			$scope.filter.change('new');
+
+ 			$scope.setApproved = function(id, state) {
+ 				if ( state ) {
+ 					// TODO set approved
+ 					AssistanceFactory.setApproved(id, function(answer) {
+	 					if ( answer.success ) {
+		 					for (var i in $scope.list) {
+		 						var item = $scope.list[i];
+		 						if ( item.id == id ) {
+		 							$scope.list.splice(i, 1);
+		 						}
+		 					}
+	 					}
+ 					});
  				}
  			};
  		} else {
