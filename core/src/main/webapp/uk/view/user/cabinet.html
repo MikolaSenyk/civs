@@ -1,15 +1,26 @@
 <div>
 	<div ng-show="visibility.viewProfile">
-		<h2>Особиста інформація</h2>
-		<p>Логін: {{user.login}}</p>
-		<p>Зареєстрований: {{user.createTime}}</p>
-		<p>Ім’я: {{ user.options.firstName }}</p>
-		<p>По батькові: {{ user.options.middleName }}</p>
-		<p>Прізвище: {{ user.options.lastName }}</p>
-		<div class="btn-group">
-		  <button type="button" class="btn btn-primary" ng-click="editUserInfo(true)">Редагувати</button>
-		  <button type="button" class="btn btn-default" ng-click="changePassword(true)">Змінити пароль</button>
+		<h2>Мій особистий кабінет</h2>
+		<div class="row">
+			<div class="col-md-3">
+				<img src="../images/avatar.gif" class="img-responsive img-rounded" alt="фото">
+			</div>
+			<div class="col-md-9">
+				<p>Логін: {{user.login}}</p>
+				<p>Зареєстрований: {{user.createTime}}</p>
+				<p>Ім’я: {{ user.options.firstName }}</p>
+				<p>По батькові: {{ user.options.middleName }}</p>
+				<p>Прізвище: {{ user.options.lastName }}</p>
+				<div class="btn-group">
+				  <button type="button" class="btn btn-primary" ng-click="editUserInfo(true)">Редагувати</button>
+				  <button type="button" class="btn btn-default" ng-click="changePassword(true)">Змінити пароль</button>
+				</div>
+			</div>
 		</div>
+		<p>&nbsp;</p>
+		<p><button type="button" class="btn btn-default">Мій рахунок балів</button></p>
+		<p><button type="button" class="btn btn-default">Написати адміністратору</button></p>
+		<p><button type="button" class="btn btn-default">Вартість кошику споживчого</button></p>
 	</div>
 
 	<div ng-show="visibility.editProfile">

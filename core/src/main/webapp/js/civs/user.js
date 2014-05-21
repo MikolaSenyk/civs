@@ -27,6 +27,8 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			userCabinet.viewAssistances($scope, AssistanceFactory, AgFactory);
  			
  		} else {
+ 			$scope.title = "Розділ не готовий";
+ 			$scope.subTitle = "не дійшли руки";
  			$scope.view = 'view/403.html';	
  		}
  	} else {

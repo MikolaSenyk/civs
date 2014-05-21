@@ -12,3 +12,7 @@ body {
 	color: #9eff44;
 }
 
+ul.nav.nav-tabs li.active a {
+	color: white;
+}
+

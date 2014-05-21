@@ -1,29 +1,34 @@
 <div class="container">
 
 	<nav class="navbar navbar-inverse" role="navigation">
-	  <!-- Brand and toggle get grouped for better mobile display -->
-	  <div class="navbar-header">
-	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mm-navbar-collapse">
-	      <span class="sr-only">Розгорнути меню</span>
-	      <span class="icon-bar"></span>
-	      <span class="icon-bar"></span>
-	      <span class="icon-bar"></span>
-	    </button>
-	    <a class="navbar-brand" ng-href="#/"><span class="glyphicon glyphicon-home"></span></a>
-	  </div>
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mm-navbar-collapse">
+				<span class="sr-only">Розгорнути меню</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" ng-href="#/"><span class="glyphicon glyphicon-home"></span></a>
+		</div>
 
-	  <!-- Collect the nav links, forms, and other content for toggling -->
-	  <div class="collapse navbar-collapse" id="mm-navbar-collapse">
-	    <ul class="nav navbar-nav">
-	      <li ng-class="{active: isActive_cabinet}"><a href="#/user/cabinet">Кабінет</a></li>
-	      <li ng-class="{active: isActive_assistances}"><a href="#/user/assistances">Мій внесок</a></li>
-	    </ul>
-	    <div class="navbar-right" ng-include="auth.view"></div>
-	  </div><!-- /.navbar-collapse -->
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="mm-navbar-collapse">
+			<div class="navbar-right" ng-include="auth.view"></div>
+		</div><!-- /.navbar-collapse -->
 	</nav>
 
-  <div class="page-header">
-    <h1>{{ title }}<small> {{ subTitle }}</small></h1>
-  </div>
-  <div ng-include="view" id="mainView" class="row"></div>
+	<div class="page-header">
+		<h1>{{ title }}<small> {{ subTitle }}</small></h1>
+	</div>
+	<ul class="nav nav-tabs">
+		<li ng-class="{active: isActive_cabinet}"><a href="#/user/cabinet">Головна</a></li>
+		<li ng-class="{active: isActive_assistances}"><a href="#/user/assistances">Запропонувати</a></li>
+		<li ng-class="{active: isActive_blacklist}"><a href="#/user/blacklist">Чорний список загальний</a></li>
+		<li ng-class="{active: isActive_quality}"><a href="#/user/quality">Знак якості</a></li>
+		<li ng-class="{active: isActive_suggestions}"><a href="#/user/suggestions">Книга скарг та пропозицій</a></li>
+		<li ng-class="{active: isActive_manual}"><a href="#/user/manual">Інструкція по сайту</a></li>
+	</ul>
+
+	<div ng-include="view" id="mainView" class="row"></div>
 </div>
