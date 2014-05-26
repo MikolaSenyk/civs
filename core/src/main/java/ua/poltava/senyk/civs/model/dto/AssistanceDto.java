@@ -32,7 +32,8 @@ public class AssistanceDto extends MessageDto {
 		json.put("id", getId());
         json.put("createTime", DatetimeFormat.getDate(getCreateTime()));
 		json.put("userId", getUser().getId());
-		json.put("groupId", getGroup().getId());
+		//json.put("groupId", getGroup().getId());
+        json.put("group", getGroup().getJSON());
 		json.put("description", getDescription());
 		json.put("approved", isApproved());
 		return json;
