@@ -60,6 +60,8 @@ public class Assistance implements Serializable {
 	private String description;
 	@Column(name = "approved", nullable = false, columnDefinition = "bit")
     private boolean approved;
+    @Column(name = "enabled", nullable = false, columnDefinition = "bit")
+    private boolean enabled;
 
 	public Assistance() {
 		this.id = 0L;
@@ -120,5 +122,13 @@ public class Assistance implements Serializable {
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 	
 }

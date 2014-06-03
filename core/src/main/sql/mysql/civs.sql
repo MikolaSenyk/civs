@@ -22,7 +22,7 @@ CREATE TABLE `reg_options` (
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL auto_increment,
   `create_time` timestamp NOT NULL default NOW(),
-  `login` varchar(32) NOT NULL,
+  `login` varchar(64) NOT NULL,
   `passwd` varchar(32) NOT NULL COLLATE utf8_bin,
   `role` char(5) NOT NULL default 'USER',
   `enabled` bool NOT NULL default 1,
@@ -46,6 +46,7 @@ CREATE TABLE `assistances` (
   `group_id` bigint(20) NOT NULL,
   `description` varchar(1024) NOT NULL,
   `approved` bool NOT NULL default 0,
+  `enabled` bool NOT NULL default 1,
   PRIMARY KEY  (`id`),
   CONSTRAINT `a_user_key` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT `a_group_key` FOREIGN KEY (`group_id`) REFERENCES assistance_groups(`id`) ON UPDATE CASCADE ON DELETE CASCADE

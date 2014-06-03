@@ -50,7 +50,7 @@ public class User implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time", nullable = false)
 	private Date createTime;
-	@Column(name = "login", nullable = false, length = 32)
+	@Column(name = "login", nullable = false, length = 64)
     private String login;
 	@Column(name = "passwd", nullable = false, length = 32)
     private String passwd;

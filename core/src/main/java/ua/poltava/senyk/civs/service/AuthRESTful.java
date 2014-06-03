@@ -36,6 +36,8 @@ public class AuthRESTful {
 	private AuthService _authService;
 	@Autowired
 	private RegOptionDao _regOptionDao;
+    @Autowired
+    private UserService _userService;
 	
 	/**
 	 * Get authenticated UserDto instance from HTTP session
@@ -101,7 +103,12 @@ public class AuthRESTful {
 			String passwd = paramsJson.getString("passwd");
 			String passwdCheck = paramsJson.getString("passwdCheck");
 			String code = paramsJson.getString("code");
-			
+            String phone = paramsJson.getString("phone");
+            String address = paramsJson.getString("address");
+            // optional
+			String firstName = paramsJson.getString("firstName");
+            String lastName = paramsJson.getString("lastName");
+            
 			// validate
 			logger.info("Passwds: " + passwd + "/" + passwdCheck);
 			if ( passwd == null || !passwd.equals(passwdCheck) ) {
@@ -115,6 +122,12 @@ public class AuthRESTful {
 
 			UserDto user = _authService.register(login, passwd, UserRole.USER, true);
 			if ( user.isSuccess() ) {
+                // append options
+                user.setAddress(address);
+                user.setPhone(phone);
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                _userService.updateUserOptions(user);
 				json = doLogIn(login, passwd, req);
 			} else {
 				json = JsonUtils.buildErrorMessage("Register was failed");

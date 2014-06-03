@@ -25,6 +25,8 @@ public class UserDto extends MessageDto {
 	private String firstName;
 	private String lastName;
 	private String middleName;
+    private String phone;
+    private String address;
 
 	public UserDto() {
 		super();
@@ -44,6 +46,8 @@ public class UserDto extends MessageDto {
 		optionsJson.put("firstName", getFirstName());
 		optionsJson.put("lastName", getLastName());
 		optionsJson.put("middleName", getMiddleName());
+        optionsJson.put("phone", getPhone());
+        optionsJson.put("address", getAddress());
 		json.put("options", optionsJson);
 		return json;
 	}
@@ -119,5 +123,21 @@ public class UserDto extends MessageDto {
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 	
 }

@@ -145,9 +145,9 @@ civsApp.factory("AssistanceFactory", function ($http) {
 });
 
 var jsTools = {
-	emptyFields: function(fieldNames) {
+	emptyFields: function(fieldNames, obj) {
 		var arrFn = fieldNames.split(',');
-		var obj = {};
+		if ( obj === undefined ) obj = {};
 		for (var i in arrFn) {
 			obj[arrFn[i]] = '';
 		}

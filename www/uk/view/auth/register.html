@@ -1,30 +1,43 @@
 <div class="row">
-	<div class="col-lg-6">
-		<h2>Увага!</h2>
-		<p>Наразі реєстрація на сайті обмежена. Крім ваших особистих даних ви маєте вказати секретний "Реєстраційний код",
-		 який можна отримати у координатора системи.</p>
-	</div>
-	<div class="col-lg-6">
+	<div class="col-md-6 col-md-offset-3">
 		<div ng-show="error" class="alert alert-warning">{{ error }}</div>
-		<form role="form" ng-submit="submit()">
+		<form role="form" ng-submit="submitRegistration()">
 			<div class="form-group">
-			  <label for="code">Реєстраційний код</label>
-			  <input type="text" class="form-control" id="code" ng-model="code" placeholder="Введіть реєстраційний код" ng-pattern="/\d+/" required>
+				<label for="firstName">Ім'я</label>
+				<input type="text" class="form-control" id="firstName" ng-model="firstName" placeholder="Введіть ваше ім'я">
 			</div>
-		  <div class="form-group">
-		    <label for="login">Логін</label>
-		    <input type="text" class="form-control" id="login" ng-model="login" placeholder="Введіть логін" required>
-		  </div>
-		  <div class="form-group">
-		    <label for="passwd">Пароль</label>
-		    <input type="password" class="form-control" id="passwd" ng-model="passwd" placeholder="Введіть пароль" required>
-		  </div>
-		  <div class="form-group">
-		    <label for="passwdCheck">Пароль ще раз</label>
-		    <input type="password" class="form-control" id="passwdCheck" ng-model="passwdCheck" placeholder="Повторіть пароль" required>
-		  </div>
-		  <button type="submit" class="btn btn-primary">Зареєструватися</button>
+			<div class="form-group">
+				<label for="lastName">Прізвище</label>
+				<input type="text" class="form-control" id="lastName" ng-model="lastName" placeholder="Введіть ваше прізвище">
+			</div>
+			<div class="form-group">
+				<label for="login">Email <span class="glyphicon glyphicon-asterisk"></span></label>
+				<input type="email" class="form-control" id="login" ng-model="login" placeholder="Введіть вашу електронну адресу" required>
+			</div>
+			<div class="form-group">
+				<label for="passwd">Пароль <span class="glyphicon glyphicon-asterisk"></span></label>
+				<input type="password" class="form-control" id="passwd" ng-model="passwd" placeholder="Введіть пароль" required>
+			</div>
+			<div class="form-group">
+				<label for="passwdCheck">Пароль ще раз <span class="glyphicon glyphicon-asterisk"></span></label>
+				<input type="password" class="form-control" id="passwdCheck" ng-model="passwdCheck" placeholder="Повторіть пароль" required>
+			</div>
+			<div class="form-group">
+				<label for="phone">Телефон <span class="glyphicon glyphicon-asterisk"></span></label>
+				<input type="text" class="form-control" id="phone" ng-model="phone" placeholder="Введіть свій номер телефону" required>
+			</div>
+			<div class="form-group">
+				<label for="address">Адреса проживання <span class="glyphicon glyphicon-asterisk"></span></label>
+				<input type="text" class="form-control" id="address" ng-model="address" placeholder="Введіть свою адресу проживання: вулиця, район, місто/село" required>
+			</div>
+			<div class="form-group">
+				<label for="code">Спеціальний ключ <span class="glyphicon glyphicon-asterisk"></span></label>
+				<input type="text" class="form-control" id="code" ng-model="code" placeholder="Введіть спеціальний ключ" ng-pattern="/\d+/" required>
+			</div>
+			<button type="submit" class="btn btn-primary pull-right">Зареєструватися</button>
 		</form>
+		<div class="clearfix"></div>
+		<p><span class="glyphicon glyphicon-asterisk"></span> Обов'язкові поля</p>
 	</div>
 </div>
 

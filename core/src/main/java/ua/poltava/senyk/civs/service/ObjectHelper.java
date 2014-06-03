@@ -58,6 +58,7 @@ public class ObjectHelper {
 			o.setCreateTime(assistance.getCreateTime());
 			o.setDescription(assistance.getDescription());
 			o.setApproved(assistance.isApproved());
+            o.setEnabled(assistance.isEnabled());
 			o.setGroup(getAssistanceGroup(assistance.getGroup()));
 			o.setUser(getUser(assistance.getUser()));
 			o.setSuccess(o.getUser().isSuccess() && o.getGroup().isSuccess());

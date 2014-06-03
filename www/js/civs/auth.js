@@ -84,6 +84,16 @@ civsApp.factory("CheckAuth", function($q, $http, AuthFactory) {
 
 civsApp.controller('AuthCtrl', function ($scope, $route, $http, $location, AuthFactory) {
 	$scope.action = $route.current.params.action;
+
+	// common actions
+	$scope.submitLogin = function() {
+		AuthFactory.doLogin(
+			{login: this.l, passwd: this.p},
+			function() {
+				$scope.loginError = "Неправильно вказаний email чи пароль";
+			}
+		);
+	};
 	
 	if ( $scope.action == 'login' ) {
 		$scope.view = "view/auth/login.html";
@@ -92,6 +102,7 @@ civsApp.controller('AuthCtrl', function ($scope, $route, $http, $location, AuthF
 	 	$scope.error = null;
 	 	$scope.login = '';
 	 	$scope.passwd = '';
+	 	// FIXME deprecated
 	 	$scope.submit = function() {
 	 		AuthFactory.doLogin(
 	 			{login: this.login, passwd: this.passwd},
@@ -108,19 +119,24 @@ civsApp.controller('AuthCtrl', function ($scope, $route, $http, $location, AuthF
 	} else if ( $scope.action == 'register' ) {
 		console.log("register ctrl");
 		$scope.view = "view/auth/register.html";
-		$scope.title = "Реєстрація";
-	 	$scope.subTitle = "нового користувача у систему";
+		$scope.title = "Зареєструватися";
+	 	$scope.subTitle = "";
 	 	$scope.error = null;
-	 	$scope.login = '';
+	 	jsTools.emptyFields("firstName,lastName,login,passwd,passwdCheck,phone,address,code", $scope);
+	 	/*$scope.login = '';
 	 	$scope.passwd = '';
 	 	$scope.passwdCheck = '';
-	 	$scope.code = '';
-	 	$scope.submit = function() {
+	 	$scope.code = '';*/
+	 	$scope.submitRegistration = function() {
 	 		var p = {
 	 			code: this.code,
 	 			login: this.login,
 	 			passwd: this.passwd,
-	 			passwdCheck: this.passwdCheck
+	 			passwdCheck: this.passwdCheck,
+	 			firstName: this.firstName,
+	 			lastName: this.lastName,
+	 			phone: this.phone,
+	 			address: this.address
 	 		};
 	 		$http.put(AuthFactory.apiUrl+"register", p).success(function (json) {
 				if ( json.success ) {

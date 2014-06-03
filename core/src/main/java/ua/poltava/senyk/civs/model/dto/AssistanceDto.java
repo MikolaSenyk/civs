@@ -21,6 +21,7 @@ public class AssistanceDto extends MessageDto {
     private AssistanceGroupDto group;
 	private String description;
     private boolean approved;
+    private boolean enabled;
 
 	public AssistanceDto() {
 		this.id = 0L;
@@ -36,6 +37,7 @@ public class AssistanceDto extends MessageDto {
         json.put("group", getGroup().getJSON());
 		json.put("description", getDescription());
 		json.put("approved", isApproved());
+        json.put("enabled", isEnabled());
 		return json;
 	}
 
@@ -86,5 +88,13 @@ public class AssistanceDto extends MessageDto {
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 	
 }
