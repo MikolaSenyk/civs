@@ -4,8 +4,8 @@
  */
 
 civsApp.controller('MainCtrl', function ($scope, $route, $http, $location, AuthFactory) {
-	$scope.title = "СОЛІДАРНА ГРОМАДА";
- 	$scope.subTitle = " - це громадянське суспільство";
+	$scope.title = "Громадська організація \"Солідарна громада\"";
+ 	$scope.subTitle = "";
  	$scope.action = $route.current.params.action;
  	if ( ! $scope.action ) $scope.action = 'base';
  	$scope['isActive_'+$scope.action] = true;

@@ -95,23 +95,7 @@ civsApp.controller('AuthCtrl', function ($scope, $route, $http, $location, AuthF
 		);
 	};
 	
-	if ( $scope.action == 'login' ) {
-		$scope.view = "view/auth/login.html";
-		$scope.title = "Вхід у систему";
-	 	$scope.subTitle = "аутентифікація";
-	 	$scope.error = null;
-	 	$scope.login = '';
-	 	$scope.passwd = '';
-	 	// FIXME deprecated
-	 	$scope.submit = function() {
-	 		AuthFactory.doLogin(
-	 			{login: this.login, passwd: this.passwd},
-	 			function() {
-	 				$scope.error = "Неправильно вказаний логін чи пароль";
-	 			}
-	 		);
-	 	};
-	} else if ( $scope.action == 'logout' ) {
+	if ( $scope.action == 'logout' ) {
 		AuthFactory.doLogout();
 		$scope.view = "view/auth/logout.html";
 		$scope.title = "Ви вийшли";
@@ -123,10 +107,6 @@ civsApp.controller('AuthCtrl', function ($scope, $route, $http, $location, AuthF
 	 	$scope.subTitle = "";
 	 	$scope.error = null;
 	 	jsTools.emptyFields("firstName,lastName,login,passwd,passwdCheck,phone,address,code", $scope);
-	 	/*$scope.login = '';
-	 	$scope.passwd = '';
-	 	$scope.passwdCheck = '';
-	 	$scope.code = '';*/
 	 	$scope.submitRegistration = function() {
 	 		var p = {
 	 			code: this.code,
