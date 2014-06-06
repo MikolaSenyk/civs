@@ -8,7 +8,7 @@ var USER_ROLE_NAME = "USER";
 var ANONYMOUS_ROLE_NAME = "ANONYMOUS";
 
 civsApp.factory("AuthFactory", function($http, $location) {
-	console.log("AuthFactory init");
+	//console.log("AuthFactory init");
 	var auth = {
 		apiUrl: "/core/s/auth/",
 		login: '',
@@ -45,7 +45,7 @@ civsApp.factory("AuthFactory", function($http, $location) {
 	};
 
 	auth.getAuthInfo = function(view) {
-		console.log("isLogged: " + this.isLogged);
+		//console.log("isLogged: " + this.isLogged);
 		var res = {
 			isLogged: this.isLogged,
 			login: this.login,
@@ -69,7 +69,7 @@ civsApp.factory("AuthFactory", function($http, $location) {
 
 civsApp.factory("CheckAuth", function($q, $http, AuthFactory) {
 	return function() {
-		console.log("CheckAuth");
+		//console.log("CheckAuth");
 		var deffered = $q.defer(); // define promise
 		$http.get(AuthFactory.apiUrl+"islogged").success(function (json) {
 			AuthFactory.setAuthInfo(json);

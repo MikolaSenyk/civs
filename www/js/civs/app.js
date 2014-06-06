@@ -127,6 +127,10 @@ civsApp.factory("AssistanceFactory", function ($http) {
 		$http.get(this.config.apiUrl + 'listAll').success(callback);
 	};
 
+	assistance.listLast = function(callback) {
+		$http.get(this.config.apiUrl + 'listLast').success(callback);
+	};
+
 	assistance.listNew = function(callback) {
 		$http.get(this.config.apiUrl + 'listNew').success(callback);
 	};
@@ -139,6 +143,12 @@ civsApp.factory("AssistanceFactory", function ($http) {
  	};
  	assistance.setApproved = function(assistanceId, callback) {
  		$http.put(this.config.apiUrl + assistanceId + '/approve').success(callback);
+ 	};
+ 	assistance.enableAll = function(cb) {
+ 		$http.post(this.config.apiUrl + 'enable/all').success(cb);
+ 	};
+ 	assistance.disableAll = function(cb) {
+ 		$http.post(this.config.apiUrl + 'disable/all').success(cb);
  	};
 
 	return assistance;

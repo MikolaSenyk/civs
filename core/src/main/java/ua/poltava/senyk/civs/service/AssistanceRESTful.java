@@ -57,6 +57,23 @@ public class AssistanceRESTful {
 		return json.toString() + "\n";
 	}
     
+    @RequestMapping(value="listLast", produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String listLast() {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+        try {
+            List<AssistanceDto> assistances = _assistanceService.findLastAssistances();
+            JSONArray itemArray = new JSONArray();
+            for (AssistanceDto assistance: assistances) {
+                itemArray.add(assistance.getJSON());
+            }
+            json.put("items", itemArray);
+        } catch (Exception e) {
+            json = JsonUtils.buildErrorMessage("Error: " + e.getMessage());
+        }
+		return json.toString() + "\n";
+	}
+    
     @RequestMapping(value="listNew", produces="application/json; charset=utf-8")
 	@ResponseBody
 	protected String listNew() {
@@ -154,4 +171,40 @@ public class AssistanceRESTful {
         }
 		return json.toString() + "\n";
 	}
+    
+    @RequestMapping(value="enable/all", method = RequestMethod.POST, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String enableAll(HttpServletRequest req) {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+		if ( authUser.isSuccess() && authUser.isEnabled() && authUser.getRole() == UserRole.USER ) {
+			try {
+				_assistanceService.enableUserAssistances(authUser.getId());
+			} catch (Exception e) {
+				json = JsonUtils.buildErrorMessage("Error: " + e.getMessage());
+			}
+		} else {
+			json = JsonUtils.buildErrorMessage("User auth required");
+		}
+		return json.toString() + "\n";
+	}
+    
+    @RequestMapping(value="disable/all", method = RequestMethod.POST, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String disableAll(HttpServletRequest req) {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+		if ( authUser.isSuccess() && authUser.isEnabled() && authUser.getRole() == UserRole.USER ) {
+			try {
+				_assistanceService.disableUserAssistances(authUser.getId());
+			} catch (Exception e) {
+				json = JsonUtils.buildErrorMessage("Error: " + e.getMessage());
+			}
+		} else {
+			json = JsonUtils.buildErrorMessage("User auth required");
+		}
+		return json.toString() + "\n";
+	}
+    
+    
 }

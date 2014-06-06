@@ -8,5 +8,9 @@
 	</div>
 	<div class="col-md-4">
 		<h3>Свіжі об'яви</h3>
+		<div class="row" ng-repeat="assistance in lastAssistances">
+			{{ assistance.description }}
+			<hr>
+		</div>
 	</div>
 </div>

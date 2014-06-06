@@ -51,6 +51,14 @@ public class AssistanceDao extends Dao<Assistance> {
 	}
     
     @SuppressWarnings("unchecked")
+	public List<Assistance> findAllEnabled(int first, int count) throws Exception {
+		Query query = getEntityManager().createNamedQuery("Assistances.findAllEnabled");
+		query.setFirstResult(first);
+        query.setMaxResults(count);
+		return query.getResultList();
+	}
+    
+    @SuppressWarnings("unchecked")
 	public List<Assistance> findNotApprovedAssistances() throws Exception {
 		return getObjectList("Assistances.findNew");
 	}

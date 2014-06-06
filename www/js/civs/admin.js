@@ -8,7 +8,7 @@
 civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AgFactory, AssistanceFactory) {
 	$scope.title = "Адмін панель";
  	$scope.subTitle = "режим адміністратора";
- 	$scope.action = $route.current.params.action;
+ 	$scope.action = $route.current.params.action || 'dashboard';
  	
 
  	// add auth block
@@ -17,7 +17,7 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  	if ( AuthFactory.isAdmin() ) {
  		$scope['isActive_'+$scope.action] = true;
 
- 		if ( $scope.action == "" ) {
+ 		if ( $scope.action == "dashboard" ) {
  			// Dashboard
  			$scope.view = 'view/admin/dashboard.html';
  			$scope.regCode = null;

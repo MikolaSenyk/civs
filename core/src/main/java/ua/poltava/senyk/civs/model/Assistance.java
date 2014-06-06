@@ -30,8 +30,11 @@ import javax.persistence.TemporalType;
 			name = "Assistances.findAll",
 			query = "SELECT a FROM Assistance a ORDER BY a.createTime DESC"),
     @NamedQuery(
+			name = "Assistances.findAllEnabled",
+			query = "SELECT a FROM Assistance a WHERE a.enabled = 1 ORDER BY a.createTime DESC"),
+    @NamedQuery(
 			name = "Assistances.findNew",
-			query = "SELECT a FROM Assistance a WHERE a.approved != 1 ORDER BY a.createTime DESC"),
+			query = "SELECT a FROM Assistance a WHERE a.approved <> 1 ORDER BY a.createTime DESC"),
     @NamedQuery(
 			name = "Assistances.findByGroupId",
 			query = "SELECT a FROM Assistance a WHERE a.group.id = :groupId ORDER BY a.createTime DESC"),
@@ -66,6 +69,7 @@ public class Assistance implements Serializable {
 	public Assistance() {
 		this.id = 0L;
 		this.createTime = new Date(); // FIXME gmt+0
+        this.enabled = true;
 	}
 
 	public Assistance(User user, AssistanceGroup group, String description) {

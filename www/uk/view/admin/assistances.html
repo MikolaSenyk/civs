@@ -22,7 +22,7 @@
 		<tr ng-repeat="assistance in list">
 			<td>{{ assistance.createTime }}</td>
 			<td>{{ assistance.description }}</td>
-			<td><a class="btn btn-primary" ng-click="setApproved(assistance.id, true)">Підтвердити</a></td>
+			<td><a ng-show="filter.regime == 'new'" class="btn btn-primary" ng-click="setApproved(assistance.id, true)">Підтвердити</a></td>
 		</tr>
 	</tbody>
 </table>

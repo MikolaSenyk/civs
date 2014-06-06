@@ -1,7 +1,14 @@
 <div>
 	<h2>Моя допомога</h2>
 	<div class="row" ng-repeat="assistance in assistanceList">
-		<div class="col-xs-2"><p>{{ assistance.createTime }}<br>{{ assistance.group.name }}</p></div>
+		<div class="col-xs-2">
+			<p>
+				{{ assistance.createTime }}<br>
+				{{ assistance.group.name }}<br>
+				<span ng-show="assistance.enabled">Активне <span class="glyphicon glyphicon-ok-sign"></span></span>
+				<span ng-hide="assistance.enabled">Призупинено <span class="glyphicon glyphicon-pause"></span></span>
+			</p>
+		</div>
 		<div class="col-xs-9"><p>{{ assistance.description }}</p></div>
 		<div class="col-xs-1">
 			<a class="btn btn-link" ng-click="removeAssistances(assistance.id)"><span class="glyphicon glyphicon-remove"></span></a>

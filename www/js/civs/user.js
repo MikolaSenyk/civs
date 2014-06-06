@@ -20,7 +20,8 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			$scope.view = 'view/user/cabinet.html';
  			userCabinet.createDefaults($scope, UsersFactory);
  			userCabinet.editProfile($scope, UsersFactory);
- 			userCabinet.changePassword($scope, AuthFactory); 			
+ 			userCabinet.changePassword($scope, AuthFactory);
+ 			userCabinet.assistancesOnOff($scope, AssistanceFactory);
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
  			$scope.view = 'view/user/assistances.html';
@@ -127,6 +128,21 @@ var userCabinet = {
 					$scope.error = json.messageText;
 				}
 			})
+		};
+	},
+	/**
+	 * Describe functions to enable and disable assistances
+	 */
+	assistancesOnOff: function($scope, AssistanceFactory) {
+		$scope.enableAll = function() {
+			AssistanceFactory.enableAll(function(json) {
+				if ( json.success ) window.alert("Ваші оголошення знову активні");
+			});
+		};
+		$scope.disableAll = function() {
+			AssistanceFactory.disableAll(function(json) {
+				if ( json.success ) window.alert("Ваші оголошення було призупинено");
+			});
 		};
 	},
 	/**

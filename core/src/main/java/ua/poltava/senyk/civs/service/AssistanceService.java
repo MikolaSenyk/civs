@@ -32,6 +32,9 @@ public class AssistanceService {
 	private AssistanceDao _assistanceDao;
     @Autowired
     private UserDao _userDao;
+    
+    // Constants
+    public static final int LAST_ASSISTANCES_COUNT = 10;
 	
 	// Assistance Groups
 	
@@ -76,12 +79,23 @@ public class AssistanceService {
     
     @Transactional(rollbackFor = Exception.class)
 	public List<AssistanceDto> findAllAssistances() throws Exception {
-		List<AssistanceDto> userAssistances = new ArrayList<AssistanceDto>();
+		List<AssistanceDto> assistances = new ArrayList<AssistanceDto>();
 		ObjectHelper helper = new ObjectHelper();
 		for (Assistance assistance: _assistanceDao.findAllAssistances()) {
-			userAssistances.add(helper.getAssistance(assistance));
+			assistances.add(helper.getAssistance(assistance));
 		}
-		return userAssistances;
+		return assistances;
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public List<AssistanceDto> findLastAssistances() throws Exception {
+		List<AssistanceDto> assistances = new ArrayList<AssistanceDto>();
+		ObjectHelper helper = new ObjectHelper();
+        // FIXME use constant
+		for (Assistance assistance: _assistanceDao.findAllEnabled(0, LAST_ASSISTANCES_COUNT)) {
+			assistances.add(helper.getAssistance(assistance));
+		}
+		return assistances;
 	}
     
     @Transactional(rollbackFor = Exception.class)
@@ -153,6 +167,22 @@ public class AssistanceService {
         Assistance assistance = _assistanceDao.getAssistanceById(id);
         assistance.setApproved(true);
         _assistanceDao.updateObject(assistance);
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public void enableUserAssistances(long userId) throws Exception {
+        for (Assistance assistance: _assistanceDao.findUserAssistances(userId)) {
+			assistance.setEnabled(true);
+            _assistanceDao.updateObject(assistance);
+		}
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public void disableUserAssistances(long userId) throws Exception {
+        for (Assistance assistance: _assistanceDao.findUserAssistances(userId)) {
+			assistance.setEnabled(false);
+            _assistanceDao.updateObject(assistance);
+		}
 	}
 	
 }
