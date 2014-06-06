@@ -40,7 +40,7 @@ civsApp.factory("AuthFactory", function($http, $location) {
 
 	auth.setAuthInfo = function(json) {
 		auth.isLogged = json.success;
-		auth.login = angular.uppercase(json.login);
+		auth.login = json.login;
 		auth.role = json.role;
 	};
 
@@ -95,7 +95,11 @@ civsApp.controller('AuthCtrl', function ($scope, $route, $http, $location, AuthF
 		);
 	};
 	
-	if ( $scope.action == 'logout' ) {
+	if ( $scope.action == 'login' ) {
+		$scope.view = "view/auth/login.html";
+		$scope.title = "Авторизація";
+	 	$scope.subTitle = "користувача у системі";
+	} else if ( $scope.action == 'logout' ) {
 		AuthFactory.doLogout();
 		$scope.view = "view/auth/logout.html";
 		$scope.title = "Ви вийшли";

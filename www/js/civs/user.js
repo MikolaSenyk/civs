@@ -54,7 +54,7 @@ var userCabinet = {
 		$scope.user = {
 			login: '',
 			createTime: '',
-			options: jsTools.emptyFields("firstName,middleName,lastName")
+			options: jsTools.emptyFields("firstName,middleName,lastName,phone,address")
 		};
 		$scope.visibility = {};
 		userCabinet.mode('viewProfile', $scope);
@@ -71,22 +71,29 @@ var userCabinet = {
 	 */
 	editProfile: function($scope, UsersFactory) {
 		$scope.editUserInfo = function(state) {
+			$scope.error = '';
 			if ( state ) {
 				$scope.options = {
 					firstName: $scope.user.options.firstName,
 					lastName: $scope.user.options.lastName,
-					middleName: $scope.user.options.middleName
+					middleName: $scope.user.options.middleName,
+					phone: $scope.user.options.phone,
+					address: $scope.user.options.address
 				}
 				userCabinet.mode('editProfile', $scope);
 			} else userCabinet.mode('viewProfile', $scope);
 		};
 
 		$scope.submitProfile = function() {
-			$scope.editUserInfo(false);
-			$scope.user.options = $scope.options;
+			
 			// save on server
 			UsersFactory.updateOptions($scope.options, function(json) {
-				if ( !json.success ) window.alert("Ooops!");
+				if ( json.success ) {
+					$scope.editUserInfo(false);
+					$scope.user.options = $scope.options;
+				} else {
+					$scope.error = json.messageText;
+				}
 			});
 			
 		};

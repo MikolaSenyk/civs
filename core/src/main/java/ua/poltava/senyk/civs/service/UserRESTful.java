@@ -140,7 +140,11 @@ public class UserRESTful {
 			try {
 				ObjectHelper helper = new ObjectHelper();
 				helper.updateUserOptions(authUser, httpUtils.getRequestBodyString(req));
-				_userService.updateUserOptions(authUser);
+                if ( authUser.isSuccess() ) {
+                    _userService.updateUserOptions(authUser);
+                } else {
+                    json = JsonUtils.buildErrorMessage(authUser.getMessageText());
+                }
 			} catch(Exception e) {
 				json = JsonUtils.buildErrorMessage("Unable to update user's options: " + e.getMessage());
 			}

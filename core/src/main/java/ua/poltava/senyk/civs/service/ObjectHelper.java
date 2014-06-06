@@ -11,6 +11,7 @@ import ua.poltava.senyk.civs.model.User;
 import ua.poltava.senyk.civs.model.dto.AssistanceDto;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
+import ua.poltava.senyk.civs.utils.JsonHelper;
 
 
 /**
@@ -38,6 +39,21 @@ public class ObjectHelper {
 		if ( optionsJson.containsKey("firstName") ) o.setFirstName(optionsJson.getString("firstName"));
 		if ( optionsJson.containsKey("lastName") ) o.setLastName(optionsJson.getString("lastName"));
 		if ( optionsJson.containsKey("middleName") ) o.setMiddleName(optionsJson.getString("middleName"));
+        // required fields
+        if ( JsonHelper.hasRequiredStringField("phone", optionsJson) ) {
+            o.setPhone(optionsJson.getString("phone"));
+        } else {
+            o.setSuccess(false);
+            o.setMessageText("Phone is requred");
+            return;
+        }
+        if ( JsonHelper.hasRequiredStringField("address", optionsJson) ) {
+            o.setAddress(optionsJson.getString("address"));
+        } else {
+            o.setSuccess(false);
+            o.setMessageText("Address is requred");
+            return;
+        }
 	}
 		
 	public AssistanceGroupDto getAssistanceGroup(AssistanceGroup group) {
