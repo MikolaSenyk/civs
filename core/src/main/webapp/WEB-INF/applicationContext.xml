@@ -30,18 +30,18 @@
 	
 	
 	<!-- Spring JPA Entity Manager Factory -->
-    <bean id="jpaEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-      <property name="persistenceXmlLocation" value="/WEB-INF/persistence.xml" />
-      <property name="persistenceProvider">
-        <bean class="org.hibernate.ejb.HibernatePersistence" />
-      </property>
-      <property name="persistenceUnitName" value="civsPU"/>
-    </bean>
+        <bean id="jpaEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+          <property name="persistenceXmlLocation" value="/WEB-INF/persistence.xml" />
+          <property name="persistenceProvider">
+            <bean class="org.hibernate.ejb.HibernatePersistence" />
+          </property>
+          <property name="persistenceUnitName" value="civsPU"/>
+        </bean>
 
-    <!-- Spring JPA Transaction Manager -->
-    <bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="jpaEntityManagerFactory"/>
-    </bean>
+        <!-- Spring JPA Transaction Manager -->
+        <bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name="entityManagerFactory" ref="jpaEntityManagerFactory"/>
+        </bean>
 
 	<!-- JPA annotations bean post processor -->
 	<!-- Required to load the EntityManager in the DAO -->
@@ -52,5 +52,6 @@
 	<bean id="userService" class="ua.poltava.senyk.civs.service.UserService" />
 	<bean id="authService" class="ua.poltava.senyk.civs.service.AuthService" />
 	<bean id="assistanceService" class="ua.poltava.senyk.civs.service.AssistanceService" />
+        <bean id="letterService" class="ua.poltava.senyk.civs.service.LetterService" />
 
 </beans>
