@@ -30,6 +30,13 @@ public class UserService {
 		ObjectHelper helper = new ObjectHelper();
 		return helper.getUser(user);
 	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public UserDto findUser(String login) throws Exception {
+		User user = _userDao.findUserByLogin(login);
+		ObjectHelper helper = new ObjectHelper();
+		return helper.getUser(user);
+	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public List<UserDto> findUsers() throws Exception {

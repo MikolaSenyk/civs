@@ -31,6 +31,8 @@ import ua.poltava.senyk.civs.utils.JsonUtils;
 public class LetterRESTful {
     
     @Autowired
+	private AppConfig _config;
+	@Autowired
     private LetterService _letterService;
     @Autowired
     private AuthRESTful _authRESTful;
@@ -38,7 +40,8 @@ public class LetterRESTful {
     @RequestMapping(value="status", produces="text/plain; charset=utf-8")
 	@ResponseBody
 	protected String status(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		return "Letter service is ready\n";
+		return "Letter service is ready\n" +
+				"Admin user ID=" + _config.getAdminUserId();
 	}
     
     @RequestMapping(value="sendToAdmin", method = RequestMethod.POST, produces="application/json; charset=utf-8")

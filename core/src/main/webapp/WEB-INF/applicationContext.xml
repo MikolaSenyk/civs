@@ -28,6 +28,11 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
+	<!-- Config bean -->
+    <bean id="appConfig" class="ua.poltava.senyk.civs.service.AppConfig"
+		factory-method="getInstance" init-method="init" destroy-method="destroy" >
+            <property name="propertyFileLocation" value="/etc/civs/civs.properties" />
+	</bean>
 	
 	<!-- Spring JPA Entity Manager Factory -->
         <bean id="jpaEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
