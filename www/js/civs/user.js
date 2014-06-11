@@ -2,7 +2,7 @@
  * Civil Society Application
  * User panel controller
  */
-civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AssistanceFactory, AgFactory) {
+civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AssistanceFactory, AgFactory, LetterFactory) {
 	$scope.title = "Неавторизований";
  	$scope.subTitle = "режим користувача";
  	$scope.action = $route.current.params.action;
@@ -22,6 +22,7 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			userCabinet.editProfile($scope, UsersFactory);
  			userCabinet.changePassword($scope, AuthFactory);
  			userCabinet.assistancesOnOff($scope, AssistanceFactory);
+ 			userCabinet.sendMessageToAdmin($scope, LetterFactory);
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
  			$scope.view = 'view/user/assistances.html';
@@ -144,6 +145,36 @@ var userCabinet = {
 				if ( json.success ) window.alert("Ваші оголошення було призупинено");
 			});
 		};
+	},
+	/**
+	 * Prepare of sending messages to admin
+	 */
+	sendMessageToAdmin: function($scope, LetterFactory) {
+		//$scope.message = '';
+		$scope.toAdmin = {message: ''};
+		$scope.showNotification = function(state, msg) {
+			if ( state ) {
+				$scope.notificationMessage = msg;
+			}
+			var modeName = ( state ) ? 'viewNotification' : 'viewProfile';
+			userCabinet.mode(modeName, $scope);
+		};
+		$scope.showSendToAdmin = function(state) {
+			if ( state ) {
+				$scope.toAdmin.message = '';
+			}
+			var modeName = ( state ) ? 'viewSendToAdmin' : 'viewProfile';
+			userCabinet.mode(modeName, $scope);
+		};
+		$scope.sendMessageToAdmin = function(message) {
+			LetterFactory.sendToAdmin(message, function(json) {
+				if ( json.success ) {
+					$scope.showNotification(true, "Ваше повідомлення було відправлене адміністратору");
+				} else {
+					window.alert("Ooops, unable to send message");
+				}
+			});
+		}
 	},
 	/**
 	 * Show list of user's assistances

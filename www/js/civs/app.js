@@ -154,6 +154,29 @@ civsApp.factory("AssistanceFactory", function ($http) {
 	return assistance;
 });
 
+civsApp.factory("LetterFactory", function ($http) {
+	var letter = {};
+
+	letter.config = {
+		apiUrl: "/core/s/letter/"
+	};
+
+	letter.sendToAdmin = function(msg, callback) {
+		$http.post(this.config.apiUrl + 'sendToAdmin', {"message": msg}).success(callback);
+	};
+
+	letter.listNew = function(callback) {
+		$http.post(this.config.apiUrl + 'listNew').success(callback);
+	};
+
+	letter.markAsRead = function(letterId, callback) {
+		$http.get(this.config.apiUrl + letterId +'/markAsRead').success(callback);
+	};
+
+	return letter;
+});
+
+
 var jsTools = {
 	emptyFields: function(fieldNames, obj) {
 		var arrFn = fieldNames.split(',');

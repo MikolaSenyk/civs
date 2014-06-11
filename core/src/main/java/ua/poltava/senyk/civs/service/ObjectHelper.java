@@ -31,6 +31,7 @@ public class ObjectHelper {
 			o.setPasswd(user.getPasswd());
 			o.setRole(user.getRole());
 			o.setEnabled(user.isEnabled());
+            o.setCreateTime(user.getCreateTime());
 			o.setSuccess(true);
 		}
 		return o;
@@ -93,6 +94,7 @@ public class ObjectHelper {
             o.setToUser(getUser(letter.getToUser()));
             o.setMessage(letter.getMessage());
             o.setRead(letter.isRead());
+            o.setSuccess(true);
         }
         return o;
     }

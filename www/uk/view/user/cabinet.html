@@ -25,8 +25,8 @@
 			<button ng-click="enableAll()" type="button" class="btn btn-default">Відновити</button>
 			мої оголошення
 		</p>
-		<p><button type="button" class="btn btn-default">Написати адміністратору</button></p>
-		<p><button type="button" class="btn btn-default">Вартість кошику споживчого</button></p>
+		<p><button type="button" class="btn btn-default" ng-click="showSendToAdmin(true)">Написати адміністратору</button></p>
+		<p><button type="button" class="btn btn-default">Чого вартують твої бали?</button></p>
 	</div>
 
 	<div ng-show="visibility.editProfile">
@@ -79,5 +79,24 @@
 				<button type="button" class="btn btn-default" ng-click="changePassword(false)">Відмінити</button>
 			</form>
 		</div>
+	</div>
+
+	<div class="rows" ng-show="visibility.viewSendToAdmin">
+		<div class="col-lg-6">
+			<h2>Повідомлення адміністратору</h2>
+			<form role="form" ng-submit="sendMessageToAdmin(toAdmin.message)">
+				<div class="form-group">
+				  <label for="message">Текст повідомлення:</label>
+				  <textarea class="form-control" rows="3" maxlength="512" id="message" ng-model="toAdmin.message" placeholder="Введіть текст повідомлення до адміністратора" required></textarea>
+				</div>
+				<button type="submit" class="btn btn-primary">Відправити</button>
+				<button type="button" class="btn btn-default" ng-click="showSendToAdmin(false)">Відмінити</button>
+			</form>
+		</div>
+	</div>
+
+	<div class="rows" ng-show="visibility.viewNotification">
+		<h3>{{ notificationMessage }}</h3>
+		<button type="button" class="btn btn-primary" ng-click="showNotification(false)">Ok</button>
 	</div>
 </div>

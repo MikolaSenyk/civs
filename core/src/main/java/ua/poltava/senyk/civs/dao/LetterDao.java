@@ -44,7 +44,4 @@ public class LetterDao extends Dao<Letter> {
         return query.getResultList();
     }
     
-    
-    
-    
 }

@@ -79,6 +79,7 @@ public class AppConfig extends WebApplicationObjectSupport {
 			Resource fResource = _appContext.getResource(_propertyFileLocation);
 			fPath = fResource.getFile().getAbsolutePath();
 		}
+        _logger.info("File path: " + fPath);
 		if (_propertyFileLocation == null || _propertyFileLocation.length() == 0
 				|| !(new File(fPath).isFile())) {
 			String msg = "Cannot read the files config file.";

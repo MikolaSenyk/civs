@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import ua.poltava.senyk.civs.dao.LetterDao;
 import ua.poltava.senyk.civs.dao.UserDao;
 import ua.poltava.senyk.civs.model.Letter;
@@ -28,19 +29,20 @@ public class LetterService {
     private LetterDao _letterDao;
     @Autowired
     private UserDao _userDao;
-    
-    // FIXME get login from config
-    public static final long ADMIN_USER_ID = 1;
-    
+    @Autowired
+    private AppConfig _config;
+        
+    @Transactional(rollbackFor = Exception.class)
     public LetterDto sendToAdmin(String msg, long userId) throws Exception {
         User fromUser = _userDao.getUserById(userId);
-        User toUser = _userDao.getUserById(ADMIN_USER_ID);
+        User toUser = _userDao.getUserById(_config.getAdminUserId());
         Letter l = new Letter(fromUser, toUser, msg);
         _letterDao.addObject(l);
         ObjectHelper helper = new ObjectHelper();
         return helper.getLetter(l);
     }
     
+    @Transactional(rollbackFor = Exception.class)
     public List<LetterDto> findNewLettersToUser(long userId) throws Exception {
         List<LetterDto> letters = new ArrayList<LetterDto>();
         ObjectHelper helper = new ObjectHelper();
@@ -48,6 +50,14 @@ public class LetterService {
             letters.add(helper.getLetter(l));
         }
         return letters;
+    }
+    
+    @Transactional(rollbackFor = Exception.class)
+    public void markAsRead(long letterId, long userId) throws Exception {
+        Letter letter = _letterDao.getLetterById(letterId);
+        if ( letter != null && letter.getToUser().getId() == userId ) {
+            _letterDao.markAsRead(letterId);
+        }
     }
     
 }

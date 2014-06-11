@@ -5,7 +5,7 @@
 
 // FIXME move somewhere
 
-civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AgFactory, AssistanceFactory) {
+civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AgFactory, AssistanceFactory, LetterFactory) {
 	$scope.title = "Адмін панель";
  	$scope.subTitle = "режим адміністратора";
  	$scope.action = $route.current.params.action || 'dashboard';
@@ -152,6 +152,25 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
 	 					}
  					});
  				}
+ 			};
+ 		} else if ( $scope.action == "userMessages" ) {
+ 			// messages from user
+ 			$scope.newMessages = [];
+ 			if ( $scope.newMessages.length == 0 ) {
+ 				LetterFactory.listNew(function(json) {
+ 					if ( json.success ) {
+ 						$scope.newMessages = json.items;
+ 					}
+ 				});
+ 			}
+ 			$scope.view = 'view/admin/userMessages.html';
+
+ 			$scope.readLetter = function(index) {
+ 				LetterFactory.markAsRead($scope.newMessages[index].id, function(json) {
+ 					if ( json.success ) {
+ 						$scope.newMessages[index].read = true;
+ 					}
+ 				});
  			};
  		} else {
  			$scope.view = 'view/403.html';	

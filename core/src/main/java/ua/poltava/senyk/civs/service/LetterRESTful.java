@@ -13,6 +13,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -91,4 +92,22 @@ public class LetterRESTful {
         }
 		return json.toString() + "\n";
 	}
+    
+    @RequestMapping(value="{letterId}/markAsRead", method = RequestMethod.GET, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String markAsRead(HttpServletRequest req, @PathVariable Long letterId) throws Exception {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+        if ( authUser != null ) {
+            try {
+                _letterService.markAsRead(letterId, authUser.getId());
+            } catch(Exception e) {
+                json = JsonUtils.buildErrorMessage("Unable to mark letter as read: " + e.getMessage());
+            }
+        } else {
+            json = JsonUtils.buildErrorMessage("Auth required");
+        }
+		return json.toString() + "\n";
+	}
+    
 }
