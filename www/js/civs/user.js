@@ -23,6 +23,7 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			userCabinet.changePassword($scope, AuthFactory);
  			userCabinet.assistancesOnOff($scope, AssistanceFactory);
  			userCabinet.sendMessageToAdmin($scope, LetterFactory);
+ 			userCabinet.account($scope);
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
  			$scope.view = 'view/user/assistances.html';
@@ -175,6 +176,50 @@ var userCabinet = {
 				}
 			});
 		}
+	},
+	/**
+	 * Show user account
+	 */
+	account: function($scope) {
+		$scope.account = {
+			total: 15000, white: 9000, black: 6000, blackSpent: 3000, whiteEarned: 2700, percentAmortization: 40, depreciated: 4000
+		};
+
+		$scope.showAccount = function(state) {
+			var modeName = ( state ) ? 'viewAccount' : 'viewProfile';
+			userCabinet.mode(modeName, $scope);
+			if ( state ) {
+				$scope.updateCylinder();
+			}
+		};
+
+		$scope.updateCylinder = function() {
+			var y = 400;
+			var cylinderHeight = 395;
+			var all = $scope.account.white + $scope.account.black + $scope.account.whiteEarned + $scope.account.blackSpent + $scope.account.depreciated;
+			// TODO calculate heights and Ys
+			var svgNS = "http://www.w3.org/2000/svg";
+			$("#cylinder rect").remove();
+			var stripes = {
+				white: 'rgb(255,0,0)',
+				black: 'rgb(0,255,0)',
+				whiteEarned: 'rgb(0,0,255)',
+				blackSpent: 'rgb(128,0,255)',
+				depreciated: 'rgb(0,255,255)'
+			}
+			// depreciated
+			for (var i in stripes) {
+				var h = Math.floor(cylinderHeight * $scope.account[i] / all);
+				y -= h;
+				var $rect = document.createElementNS(svgNS,"rect");
+				$rect.setAttribute("style", "fill:" + stripes[i] + ";fill-opacity:0.6;");
+				$rect.setAttribute("x", "6");
+				$rect.setAttribute("width", "198");
+				$rect.setAttribute("y", y);
+				$rect.setAttribute("height", h);
+				document.getElementById("cylinder").appendChild($rect);
+			}
+		};
 	},
 	/**
 	 * Show list of user's assistances

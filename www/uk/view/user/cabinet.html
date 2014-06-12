@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<p>&nbsp;</p>
-		<p><button type="button" class="btn btn-default">Мій рахунок балів</button></p>
+		<p><button type="button" class="btn btn-default" ng-click="showAccount(true)">Мій рахунок балів</button></p>
 		<p>
 			<button ng-click="disableAll()" type="button" class="btn btn-default">Призупинити</button>
 			/
@@ -98,5 +98,46 @@
 	<div class="rows" ng-show="visibility.viewNotification">
 		<h3>{{ notificationMessage }}</h3>
 		<button type="button" class="btn btn-primary" ng-click="showNotification(false)">Ok</button>
+	</div>
+
+	<div ng-show="visibility.viewAccount">
+		<h2>Ваш рахунок</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="rows">
+					<div class="col-md-7">Всього на вашому рахунку:</div>
+					<div class="col-md-5">{{ account.total }}</div>
+				</div>
+				<div class="rows">
+					<div class="col-md-7">Отримано балів:</div>
+					<div class="col-md-5">{{ account.white }}</div>
+				</div>
+				<div class="rows">
+					<div class="col-md-7">Нараховано чорних балів:</div>
+					<div class="col-md-5">{{ account.black }}</div>
+				</div>
+				<div class="rows">
+					<div class="col-md-7">Витрачено чорних балів:</div>
+					<div class="col-md-5">{{ account.blackSpent }}</div>
+				</div>
+				<div class="rows">
+					<div class="col-md-7">Повернуто світлих балів:</div>
+					<div class="col-md-5">{{ account.whiteEarned }}</div>
+				</div>
+				<div class="rows">
+					<div class="col-md-7">Амортизовано балів за 30 днів через не розтрату чорних балів</div>
+					<div class="col-md-5">{{ account.percentAmortization }}%</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<svg height="405" width="210" id="cylinder">
+					<polyline points="5,0 5,400 0,405 210,405 205,400 205,0" style="fill:none; stroke: white; stroke-width: 1" />
+					Вибачте, але ваш браузер не підтримує SVG.
+				</svg>
+			</div>
+		</div>
+		<br>
+		<a class="btn btn-default" ng-click="showAccount(false)">Повернутися</a>
+		<a class="btn btn-default" ng-click="updateCylinder()">Оновити малюнок</a>
 	</div>
 </div>
