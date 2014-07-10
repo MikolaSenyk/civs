@@ -24,6 +24,15 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			userCabinet.assistancesOnOff($scope, AssistanceFactory);
  			userCabinet.sendMessageToAdmin($scope, LetterFactory);
  			userCabinet.account($scope);
+ 		} else if ( $scope.action == "uploadAvatar" ) {
+ 			$scope.title = "Фото";
+ 			$scope.subTitle = "користувача";
+ 			$scope.view = 'view/user/uploadAvatar.html';
+ 			$scope.init = function() {
+	 			cropImageUploaderInit(200, 200, 200, 200, function(bodyBase64) {
+	                console.log("image size: " + bodyBase64.length);
+	            });
+ 			};
  		} else if ( $scope.action == "assistances" ) {
  			$scope.title = "Мій внесок";
  			$scope.view = 'view/user/assistances.html';

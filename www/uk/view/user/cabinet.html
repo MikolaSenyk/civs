@@ -3,7 +3,8 @@
 		<h2>Мій особистий кабінет</h2>
 		<div class="row">
 			<div class="col-md-3">
-				<img src="../images/avatar.gif" class="img-responsive img-rounded" alt="фото">
+				<img src="../images/avatar.gif" class="img-responsive img-rounded" alt="фото"><br>
+				<a class="btn btn-default" ng-href="#/user/uploadAvatar">Змінити фото</a>
 			</div>
 			<div class="col-md-9">
 				<p>E-mail: {{user.login}}</p>
@@ -17,7 +18,7 @@
 				</div>
 			</div>
 		</div>
-		<p>&nbsp;</p>
+		<hr>
 		<p><button type="button" class="btn btn-default" ng-click="showAccount(true)">Мій рахунок балів</button></p>
 		<p>
 			<button ng-click="disableAll()" type="button" class="btn btn-default">Призупинити</button>
