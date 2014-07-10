@@ -8,10 +8,12 @@ import net.sf.json.JSONObject;
 import ua.poltava.senyk.civs.model.Assistance;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
 import ua.poltava.senyk.civs.model.Letter;
+import ua.poltava.senyk.civs.model.UploadedImage;
 import ua.poltava.senyk.civs.model.User;
 import ua.poltava.senyk.civs.model.dto.AssistanceDto;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
 import ua.poltava.senyk.civs.model.dto.LetterDto;
+import ua.poltava.senyk.civs.model.dto.UploadedImageDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
 import ua.poltava.senyk.civs.utils.JsonHelper;
 
@@ -94,6 +96,19 @@ public class ObjectHelper {
             o.setToUser(getUser(letter.getToUser()));
             o.setMessage(letter.getMessage());
             o.setRead(letter.isRead());
+            o.setSuccess(true);
+        }
+        return o;
+    }
+    
+    public UploadedImageDto getUploadedImage(UploadedImage img) {
+        UploadedImageDto o = new UploadedImageDto();
+        if ( img != null ) {
+            o.setId(img.getId());
+            o.setCreateTime(img.getCreateTime());
+            o.setUser(getUser(img.getUser()));
+            o.setFolder(img.getFolder());
+            o.setExtension(img.getExtension());
             o.setSuccess(true);
         }
         return o;

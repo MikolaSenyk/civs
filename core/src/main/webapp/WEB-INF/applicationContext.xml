@@ -58,5 +58,6 @@
 	<bean id="authService" class="ua.poltava.senyk.civs.service.AuthService" />
 	<bean id="assistanceService" class="ua.poltava.senyk.civs.service.AssistanceService" />
         <bean id="letterService" class="ua.poltava.senyk.civs.service.LetterService" />
+        <bean id="uploadImageService" class="ua.poltava.senyk.civs.service.UploadImageService" />
 
 </beans>

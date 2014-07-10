@@ -146,6 +146,11 @@ public class AppConfig extends WebApplicationObjectSupport {
 		return adminUserId;
 	}
     
+    public String getUploadBaseDir() {
+        return _config.getProperty("upload.dir");
+    }
+            
+    
 	/**
 	 * Статический метод возвращает единственный экземпляр данного класса.
 	 * @return Экземпляр класса ConfigSingleton
