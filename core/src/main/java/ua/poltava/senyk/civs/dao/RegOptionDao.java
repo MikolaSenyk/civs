@@ -22,5 +22,12 @@ public class RegOptionDao extends Dao<RegOption> {
 		RegOption regOption = getEntityManager().find(RegOption.class, RegOption.PRIMARY_REG_OPTION_ID);
 		return regOption.getCode();
 	}
+    
+    public String changePrimaryRegCode(String code) throws Exception {
+		RegOption regOption = getEntityManager().find(RegOption.class, RegOption.PRIMARY_REG_OPTION_ID);
+        regOption.setCode(code);
+        getEntityManager().merge(regOption);
+		return regOption.getCode();
+	}
 	
 }

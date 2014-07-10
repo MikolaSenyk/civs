@@ -47,6 +47,7 @@ public class AppConfig extends WebApplicationObjectSupport {
 	private static class SingletonHolder {
 
 		public static AppConfig instance = new AppConfig();
+        
 	}
 	
 	/**

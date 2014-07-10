@@ -190,6 +190,27 @@ public class AuthRESTful {
 		}
 		return json.toString() + "\n";
 	}
+    
+    @RequestMapping(value="changeRegCode", method = RequestMethod.PUT, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String changeRegCode(HttpServletRequest req) {
+		JSONObject json = JsonUtils.buildSuccessMessage();
+		UserDto user = getLoggedUser(req.getSession());
+		if ( user != null ) {
+			try {
+				if ( user.getRole() == UserRole.ADMIN ) {
+					json.put("regCode", _authService.changeRegCode());
+				} else {
+					json = JsonUtils.buildErrorMessage("This information is for admin only");
+				}
+			} catch(Exception e) {
+				json = JsonUtils.buildErrorMessage(e.getMessage());
+			}
+		} else {
+			json = JsonUtils.buildErrorMessage("Auth failed");
+		}
+		return json.toString() + "\n";
+	}
 	
 	/**
 	 * Inner login method. Used from logIn & register methods.

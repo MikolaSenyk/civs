@@ -2,7 +2,10 @@
 	<div class="col-md-4">
 		<h3>Реєстраційний код</h3>
 		<button ng-hide="regCode" class="btn btn-primary" ng-click="showRegCode()">Показати</button>
-		<p class="lead" ng-show="regCode">{{ regCode }}</p>
+		<div ng-show="regCode">
+			<p class="lead">{{ regCode }}</p>
+			<button class="btn btn-default" ng-click="changeRegCode()">Змінити</button>
+		</div>
 	</div>
 	<div class="col-md-8">
 		<h3>Розділи панелі адміністратора</h3>

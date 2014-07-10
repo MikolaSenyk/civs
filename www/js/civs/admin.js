@@ -29,7 +29,16 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
 						$scope.regCode = "Упс! " + json.messageText;
 					}
 				});
- 			}
+ 			};
+ 			$scope.changeRegCode = function() {
+		 		$http.put(AuthFactory.apiUrl+"changeRegCode").success(function (json) {
+					if ( json.success ) {
+						$scope.regCode = json.regCode;
+					} else {
+						$scope.regCode = "Упс! " + json.messageText;
+					}
+				});
+ 			};
  		} else if ( $scope.action == "users" ) {
  			// users
  			$scope.view = 'view/admin/users.html';

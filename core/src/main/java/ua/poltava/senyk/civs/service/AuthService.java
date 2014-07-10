@@ -7,6 +7,7 @@ package ua.poltava.senyk.civs.service;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import ua.poltava.senyk.civs.dao.RegOptionDao;
 import ua.poltava.senyk.civs.dao.UserDao;
 import ua.poltava.senyk.civs.model.User;
 import ua.poltava.senyk.civs.model.UserRole;
@@ -22,6 +23,8 @@ public class AuthService {
 	
 	@Autowired
 	private UserDao _userDao;
+    @Autowired
+	private RegOptionDao _regOptionDao;
 	
 	@Transactional(rollbackFor = Exception.class)
 	public UserDto login(String login, String passwd) throws Exception {
@@ -42,5 +45,11 @@ public class AuthService {
 		User user = _userDao.getUserById(userId);
         user.setPasswd(pass);
         _userDao.updateObject(user);
+	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public String changeRegCode() throws Exception {
+        long newCode = (Math.round(Math.random() * 90000) + 10000);
+        return _regOptionDao.changePrimaryRegCode(String.valueOf(newCode));
 	}
 }
