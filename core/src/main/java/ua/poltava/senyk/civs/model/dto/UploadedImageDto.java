@@ -66,12 +66,16 @@ public class UploadedImageDto extends MessageDto {
     public void setExtension(String extension) {
         this.extension = extension;
     }
+    
+    public String getPath() {
+        return getFolder() + File.separator + String.valueOf(this.getId()) + "." + getExtension();
+    }
 
     @Override
     public JSONObject getJSON() {
         JSONObject json = super.getJSON();
         json.put("id", getId());
-        json.put("path", getFolder() + File.separator + String.valueOf(this.getId()) + "." + getExtension());
+        json.put("path", getPath());
         return json;
     }
     

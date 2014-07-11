@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ua.poltava.senyk.civs.model.dto.LetterDto;
 import ua.poltava.senyk.civs.model.dto.UploadedImageDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
 import ua.poltava.senyk.civs.utils.HttpUtils;
@@ -34,6 +33,8 @@ public class UploadImageRESTful {
     private AuthRESTful _authRESTful;
     @Autowired
     private UploadImageService _imageService;
+    @Autowired
+    private UserService _userService;
     
     @RequestMapping(value="status", produces="text/plain; charset=utf-8")
 	@ResponseBody
@@ -59,6 +60,36 @@ public class UploadImageRESTful {
                     json = imgDto.getJSON();
                 } else {
                     json = JsonUtils.buildErrorMessage("Unable to upload image");
+                }
+            } catch(Exception e) {
+                json = JsonUtils.buildErrorMessage(e.getMessage());
+            }
+        } else {
+            json = JsonUtils.buildErrorMessage("Auth required");
+        }
+		return json.toString() + "\n";
+	}
+    
+    @RequestMapping(value="uploadAvatar", method = RequestMethod.POST, produces="application/json; charset=utf-8")
+	@ResponseBody
+	protected String uploadAvatar(HttpServletRequest req) throws Exception {
+		JSONObject json;
+		HttpUtils httpUtils = new HttpUtils();
+        UserDto authUser = _authRESTful.getLoggedUser(req.getSession());
+        if ( authUser != null ) {
+            try {
+                String body = httpUtils.getRequestBodyString(req);
+                JSONObject paramsJson = JSONObject.fromObject(body);
+                String imgBody = paramsJson.getString("imgBody");
+                String imgExt = paramsJson.getString("imgExt");
+                UploadedImageDto imgDto = _imageService.createImage(imgBody, authUser.getId(), imgExt);
+                if ( imgDto.isSuccess() ) {
+                    // update user profile 
+                    authUser.setAvatarPath(imgDto.getPath());
+                    _userService.updateUserOptions(authUser);
+                    json = imgDto.getJSON();
+                } else {
+                    json = JsonUtils.buildErrorMessage("Unable to upload avatar");
                 }
             } catch(Exception e) {
                 json = JsonUtils.buildErrorMessage(e.getMessage());

@@ -44,6 +44,7 @@ public class ObjectHelper {
 		if ( optionsJson.containsKey("firstName") ) o.setFirstName(optionsJson.getString("firstName"));
 		if ( optionsJson.containsKey("lastName") ) o.setLastName(optionsJson.getString("lastName"));
 		if ( optionsJson.containsKey("middleName") ) o.setMiddleName(optionsJson.getString("middleName"));
+        if ( optionsJson.containsKey("avatarPath") ) o.setAvatarPath(optionsJson.getString("avatarPath"));
         // required fields
         if ( JsonHelper.hasRequiredStringField("phone", optionsJson) ) {
             o.setPhone(optionsJson.getString("phone"));

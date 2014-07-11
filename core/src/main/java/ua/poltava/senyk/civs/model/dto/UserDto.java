@@ -27,6 +27,7 @@ public class UserDto extends MessageDto {
 	private String middleName;
     private String phone;
     private String address;
+    private String avatarPath;
 
 	public UserDto() {
 		super();
@@ -48,6 +49,7 @@ public class UserDto extends MessageDto {
 		optionsJson.put("middleName", getMiddleName());
         optionsJson.put("phone", getPhone());
         optionsJson.put("address", getAddress());
+        optionsJson.put("avatarPath", getAvatarPath());
 		json.put("options", optionsJson);
 		return json;
 	}
@@ -138,6 +140,14 @@ public class UserDto extends MessageDto {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
     }
 	
 }

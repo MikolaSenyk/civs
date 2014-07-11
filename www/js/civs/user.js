@@ -2,7 +2,7 @@
  * Civil Society Application
  * User panel controller
  */
-civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AssistanceFactory, AgFactory, LetterFactory) {
+civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AssistanceFactory, AgFactory, LetterFactory, ImageFactory) {
 	$scope.title = "Неавторизований";
  	$scope.subTitle = "режим користувача";
  	$scope.action = $route.current.params.action;
@@ -31,6 +31,11 @@ civsApp.controller('UserCtrl', function ($scope, $route, $location, $http, AuthF
  			$scope.init = function() {
 	 			cropImageUploaderInit(200, 200, 200, 200, function(bodyBase64) {
 	                console.log("image size: " + bodyBase64.length);
+	                ImageFactory.uploadAvatar(bodyBase64, function(json) {
+	                	if ( json.success ) {
+	                		$location.path("/user/cabinet");
+	                	} else alert("Opps!");
+	                });
 	            });
  			};
  		} else if ( $scope.action == "assistances" ) {
@@ -102,7 +107,7 @@ var userCabinet = {
 			UsersFactory.updateOptions($scope.options, function(json) {
 				if ( json.success ) {
 					$scope.editUserInfo(false);
-					$scope.user.options = $scope.options;
+					jsTools.copyFields($scope.options, $scope.user.options);
 				} else {
 					$scope.error = json.messageText;
 				}

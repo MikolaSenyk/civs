@@ -176,6 +176,23 @@ civsApp.factory("LetterFactory", function ($http) {
 	return letter;
 });
 
+civsApp.factory("ImageFactory", function ($http) {
+	var images = {};
+
+	images.config = {
+		apiUrl: "/core/s/images/"
+	};
+
+	images.upload = function(imgBody, callback) {
+		$http.post(this.config.apiUrl + 'upload', {"imgBody": imgBody, "imgExt": "jpg"}).success(callback);
+	};
+
+	images.uploadAvatar = function(imgBody, callback) {
+		$http.post(this.config.apiUrl + 'uploadAvatar', {"imgBody": imgBody, "imgExt": "jpg"}).success(callback);
+	};
+
+	return images;
+});
 
 var jsTools = {
 	emptyFields: function(fieldNames, obj) {
@@ -185,5 +202,8 @@ var jsTools = {
 			obj[arrFn[i]] = '';
 		}
 		return obj;
+	},
+	copyFields: function(srcObj, dstObj) {
+		for (var k in srcObj) dstObj[k]=srcObj[k];
 	}
 };

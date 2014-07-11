@@ -3,7 +3,9 @@
 		<h2>Мій особистий кабінет</h2>
 		<div class="row">
 			<div class="col-md-3">
-				<img src="../images/avatar.gif" class="img-responsive img-rounded" alt="фото"><br>
+				<img ng-hide="user.options.avatarPath" src="../images/avatar.gif" class="img-responsive img-thumbnail" alt="фото">
+				<img ng-show="user.options.avatarPath" src="/ui/{{user.options.avatarPath}}" class="img-responsive img-thumbnail" alt="фото">
+				<p></p>
 				<a class="btn btn-default" ng-href="#/user/uploadAvatar">Змінити фото</a>
 			</div>
 			<div class="col-md-9">
