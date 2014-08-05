@@ -6,6 +6,7 @@ package ua.poltava.senyk.civs.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,7 +39,7 @@ import javax.persistence.TemporalType;
 			query = "SELECT a FROM Assistance a WHERE a.approved <> 1 ORDER BY a.createTime DESC"),
     @NamedQuery(
 			name = "Assistances.findByGroupId",
-			query = "SELECT a FROM Assistance a WHERE a.group.id = :groupId ORDER BY a.createTime DESC"),
+			query = "SELECT agl.assistance FROM AssistanceGroupLink agl WHERE agl.group.id = :groupId ORDER BY agl.assistance.createTime DESC"),
 	@NamedQuery(
 			name = "Assistances.findByUserId",
 			query = "SELECT a FROM Assistance a WHERE a.user.id = :userId ORDER BY a.createTime DESC")
@@ -56,9 +58,8 @@ public class Assistance implements Serializable {
 	@ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-	@ManyToOne
-    @JoinColumn(name = "group_id")
-    private AssistanceGroup group;
+	@OneToMany(mappedBy="assistance")
+    private List<AssistanceGroupLink> groupLinks;
 	@Column(name = "description", nullable = false, length = 1024)
 	private String description;
 	@Column(name = "approved", nullable = false, columnDefinition = "bit")
@@ -72,10 +73,9 @@ public class Assistance implements Serializable {
         this.enabled = true;
 	}
 
-	public Assistance(User user, AssistanceGroup group, String description) {
+	public Assistance(User user, String description) {
 		this();
 		this.user = user;
-		this.group = group;
 		this.description = description;
 	}
 
@@ -103,13 +103,13 @@ public class Assistance implements Serializable {
 		this.user = user;
 	}
 
-	public AssistanceGroup getGroup() {
-		return group;
-	}
+    public List<AssistanceGroupLink> getGroupLinks() {
+        return groupLinks;
+    }
 
-	public void setGroup(AssistanceGroup group) {
-		this.group = group;
-	}
+    public void setGroupLinks(List<AssistanceGroupLink> groupLinks) {
+        this.groupLinks = groupLinks;
+    }
 
 	public String getDescription() {
 		return description;

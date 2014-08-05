@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,6 +25,10 @@ import javax.persistence.Table;
 	@NamedQuery(
 		name = "AssistanceGroups.findAll",
 		query = "SELECT ag FROM AssistanceGroup ag ORDER BY ag.name"
+	),
+    @NamedQuery(
+		name = "AssistanceGroups.findAllParent",
+		query = "SELECT ag FROM AssistanceGroup ag WHERE ag.parentGroup.id = :parentId ORDER BY ag.name"
 	)
 })
 public class AssistanceGroup implements Serializable {
@@ -36,8 +42,11 @@ public class AssistanceGroup implements Serializable {
     private long id;
 	@Column(name = "name", nullable = false, unique = true, length = 32)
     private String name;
-	@Column(name = "read_only", nullable = false, columnDefinition = "bit")
-    private boolean readOnly;
+    @Column(name = "`level`")
+    private int level;
+	@ManyToOne
+    @JoinColumn(name = "parent_id")
+    private AssistanceGroup parentGroup;
 
 	public AssistanceGroup() {
 		this.id = 0L;
@@ -64,12 +73,20 @@ public class AssistanceGroup implements Serializable {
 		this.name = name;
 	}
 
-	public boolean isReadOnly() {
-		return readOnly;
-	}
+    public AssistanceGroup getParentGroup() {
+        return parentGroup;
+    }
 
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-	}	
-	
+    public void setParentGroup(AssistanceGroup parentGroup) {
+        this.parentGroup = parentGroup;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+    
 }

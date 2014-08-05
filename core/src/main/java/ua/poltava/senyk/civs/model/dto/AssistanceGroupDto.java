@@ -15,7 +15,8 @@ public class AssistanceGroupDto extends MessageDto {
 	// fields
 	private long id;
 	private String name;
-	private boolean readOnly;
+	private int level;
+    private AssistanceGroupDto parentGroup;
 
 	public AssistanceGroupDto() {
 		this.id = 0L;
@@ -37,20 +38,29 @@ public class AssistanceGroupDto extends MessageDto {
 		this.name = name;
 	}
 
-	public boolean isReadOnly() {
-		return readOnly;
-	}
+    public int getLevel() {
+        return level;
+    }
 
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-	}
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public AssistanceGroupDto getParentGroup() {
+        return parentGroup;
+    }
+
+    public void setParentGroup(AssistanceGroupDto parentGroup) {
+        this.parentGroup = parentGroup;
+    }
 
 	@Override
 	public JSONObject getJSON() {
 		JSONObject json = super.getJSON();
 		json.put("id", getId());
 		json.put("name", getName());
-		json.put("readOnly", isReadOnly());
+		json.put("level", getLevel());
+        json.put("parentId", getParentGroup().getId());
 		return json;
 	}
 	

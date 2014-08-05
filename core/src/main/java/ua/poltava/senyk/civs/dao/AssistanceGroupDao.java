@@ -49,5 +49,12 @@ public class AssistanceGroupDao extends Dao<AssistanceGroup> {
 		Query query = getEntityManager().createNamedQuery("AssistanceGroups.findAll");
 		return query.getResultList();
 	}
+    
+    @SuppressWarnings("unchecked")
+	public List<AssistanceGroup> findGroups(long parentId) throws Exception {
+		Query query = getEntityManager().createNamedQuery("AssistanceGroups.findAllParent");
+        query.setParameter("parentId", parentId);
+		return query.getResultList();
+	}
 	
 }

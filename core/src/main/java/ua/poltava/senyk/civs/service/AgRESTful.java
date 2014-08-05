@@ -4,6 +4,7 @@
  */
 package ua.poltava.senyk.civs.service;
 
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
@@ -39,12 +40,13 @@ public class AgRESTful {
 		return "Assistance group service is ready\n";
 	}
 	
-	@RequestMapping(value="list", produces="application/json; charset=utf-8")
+	@RequestMapping(value="list/{parentId}", produces="application/json; charset=utf-8")
 	@ResponseBody
-	protected String groupsList(HttpServletRequest req, HttpServletResponse res) throws Exception {
+	protected String groupsList(HttpServletRequest req, @PathVariable Long parentId) throws Exception {
 		JSONObject json = JsonUtils.buildSuccessMessage();
 		JSONArray groups = new JSONArray();
-		for (AssistanceGroupDto group: _assistanceService.findGroups()) {
+        List<AssistanceGroupDto> groupList = ( parentId == null ) ? _assistanceService.findGroups() : _assistanceService.findGroups(parentId);
+		for (AssistanceGroupDto group: groupList) {
 			groups.add(group.getJSON());
 		}
 		json.put("items", groups);
@@ -61,9 +63,10 @@ public class AgRESTful {
 			String body = httpUtils.getRequestBodyString(req);
 			JSONObject paramsJson = JSONObject.fromObject(body);
 			String name = paramsJson.getString("name");
+            Long parentId = paramsJson.getLong("parentId");
 			// TODO validate
 			
-			AssistanceGroupDto group = _assistanceService.createGroup(name);
+			AssistanceGroupDto group = _assistanceService.createGroup(name, parentId);
 			json = group.getJSON();
 		} catch(Exception e) {
 			json = JsonUtils.buildErrorMessage(e.getMessage());

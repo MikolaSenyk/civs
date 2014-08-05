@@ -67,7 +67,8 @@ public class ObjectHelper {
 		if ( group != null ) {
 			o.setId(group.getId());
 			o.setName(group.getName());
-			o.setReadOnly(group.isReadOnly());
+            o.setLevel(group.getLevel());
+            o.setParentGroup(getAssistanceGroup(group.getParentGroup()));
 			o.setSuccess(true);
 		}
 		return o;
@@ -81,7 +82,6 @@ public class ObjectHelper {
 			o.setDescription(assistance.getDescription());
 			o.setApproved(assistance.isApproved());
             o.setEnabled(assistance.isEnabled());
-			o.setGroup(getAssistanceGroup(assistance.getGroup()));
 			o.setUser(getUser(assistance.getUser()));
 			o.setSuccess(o.getUser().isSuccess() && o.getGroup().isSuccess());
 		}

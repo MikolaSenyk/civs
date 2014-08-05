@@ -48,6 +48,17 @@ public class AssistanceService {
 		}
 		return dtoGroups;
 	}
+    
+    @Transactional(rollbackFor = Exception.class)
+	public List<AssistanceGroupDto> findGroups(long parentId) throws Exception {
+		List<AssistanceGroup> groups = _groupDao.findGroups(parentId);
+		ObjectHelper helper = new ObjectHelper();
+		List<AssistanceGroupDto> dtoGroups = new ArrayList<AssistanceGroupDto>(groups.size());
+		for (AssistanceGroup group : groups) {
+			dtoGroups.add(helper.getAssistanceGroup(group));
+		}
+		return dtoGroups;
+	}
 	
 	@Transactional(rollbackFor = Exception.class)
 	public AssistanceGroupDto findGroup(long id) throws Exception {
@@ -56,9 +67,16 @@ public class AssistanceService {
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
-	public AssistanceGroupDto createGroup(String name) throws Exception {
-		ObjectHelper helper = new ObjectHelper();
-		return helper.getAssistanceGroup(_groupDao.addGroup(name));
+	public AssistanceGroupDto createGroup(String name, Long parentId) throws Exception {
+		AssistanceGroup group = _groupDao.addGroup(name);
+        if ( parentId != null ) {
+            AssistanceGroup parentGroup = _groupDao.getById(parentId);
+            group.setLevel(parentGroup.getLevel()+1);
+            group.setParentGroup(parentGroup);
+            _groupDao.updateObject(group);
+        }
+        ObjectHelper helper = new ObjectHelper();
+		return helper.getAssistanceGroup(group);
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
@@ -139,8 +157,10 @@ public class AssistanceService {
 	public AssistanceDto createAssistance(String text, long groupId, long userId) throws Exception {
         User user = _userDao.getUserById(userId);
         AssistanceGroup group = _groupDao.getById(groupId);
-		Assistance assistance = new Assistance(user, group, text);
+		Assistance assistance = new Assistance(user, text);
         _assistanceDao.addObject(assistance);
+        // TODO add all related group from current groupId
+        
 		ObjectHelper helper = new ObjectHelper();
 		return helper.getAssistance(assistance);
 	}
@@ -150,9 +170,10 @@ public class AssistanceService {
         AssistanceGroup group = _groupDao.getById(groupId);
 		Assistance assistance = _assistanceDao.getAssistanceById(assistanceId);
         assistance.setDescription(text);
-        assistance.setGroup(group);
         assistance.setApproved(approved);
         _assistanceDao.updateObject(assistance);
+        // TODO update groups
+        
 		ObjectHelper helper = new ObjectHelper();
 		return helper.getAssistance(assistance);
 	}

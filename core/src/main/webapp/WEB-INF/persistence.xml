@@ -12,6 +12,7 @@
     <class>ua.poltava.senyk.civs.model.RegOption</class>
     <class>ua.poltava.senyk.civs.model.AssistanceGroup</class>
     <class>ua.poltava.senyk.civs.model.Assistance</class>
+    <class>ua.poltava.senyk.civs.model.AssistanceGroupLink</class>
     <class>ua.poltava.senyk.civs.model.Letter</class>
     
     <properties>
