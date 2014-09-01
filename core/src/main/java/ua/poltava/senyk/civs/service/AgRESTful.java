@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ua.poltava.senyk.civs.config.Base;
 import ua.poltava.senyk.civs.model.UserRole;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
@@ -45,7 +46,15 @@ public class AgRESTful {
 	protected String groupsList(HttpServletRequest req, @PathVariable Long parentId) throws Exception {
 		JSONObject json = JsonUtils.buildSuccessMessage();
 		JSONArray groups = new JSONArray();
-        List<AssistanceGroupDto> groupList = ( parentId == null ) ? _assistanceService.findGroups() : _assistanceService.findGroups(parentId);
+        List<AssistanceGroupDto> groupList;
+        if ( parentId == Base.NULL_LONG_ID ) {
+            json.put("hasParent", false);
+        } else {
+            json.put("hasParent", true);
+            json.put("parent", _assistanceService.findGroup(parentId).getJSON());
+        }
+        // add items
+        groupList = _assistanceService.findGroups(parentId);
 		for (AssistanceGroupDto group: groupList) {
 			groups.add(group.getJSON());
 		}

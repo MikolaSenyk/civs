@@ -29,6 +29,10 @@ import javax.persistence.Table;
     @NamedQuery(
 		name = "AssistanceGroups.findAllParent",
 		query = "SELECT ag FROM AssistanceGroup ag WHERE ag.parentGroup.id = :parentId ORDER BY ag.name"
+	),
+    @NamedQuery(
+		name = "AssistanceGroups.findTop",
+		query = "SELECT ag FROM AssistanceGroup ag WHERE ag.level = 1 ORDER BY ag.name"
 	)
 })
 public class AssistanceGroup implements Serializable {
@@ -55,6 +59,7 @@ public class AssistanceGroup implements Serializable {
 	public AssistanceGroup(String name) {
 		this();
 		this.name = name;
+        this.level = 1;
 	}
 
 	public long getId() {

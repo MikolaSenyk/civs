@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import ua.poltava.senyk.civs.config.Base;
 import ua.poltava.senyk.civs.dao.AssistanceDao;
 import ua.poltava.senyk.civs.dao.AssistanceGroupDao;
 import ua.poltava.senyk.civs.dao.UserDao;
@@ -67,9 +68,9 @@ public class AssistanceService {
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
-	public AssistanceGroupDto createGroup(String name, Long parentId) throws Exception {
+	public AssistanceGroupDto createGroup(String name, long parentId) throws Exception {
 		AssistanceGroup group = _groupDao.addGroup(name);
-        if ( parentId != null ) {
+        if ( parentId != Base.NULL_LONG_ID ) {
             AssistanceGroup parentGroup = _groupDao.getById(parentId);
             group.setLevel(parentGroup.getLevel()+1);
             group.setParentGroup(parentGroup);

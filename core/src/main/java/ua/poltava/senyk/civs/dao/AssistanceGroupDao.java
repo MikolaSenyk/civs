@@ -7,6 +7,7 @@ package ua.poltava.senyk.civs.dao;
 import java.util.List;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
+import ua.poltava.senyk.civs.config.Base;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
 
 /**
@@ -52,8 +53,13 @@ public class AssistanceGroupDao extends Dao<AssistanceGroup> {
     
     @SuppressWarnings("unchecked")
 	public List<AssistanceGroup> findGroups(long parentId) throws Exception {
-		Query query = getEntityManager().createNamedQuery("AssistanceGroups.findAllParent");
-        query.setParameter("parentId", parentId);
+		Query query;
+        if ( parentId == Base.NULL_LONG_ID ) {
+            query = getEntityManager().createNamedQuery("AssistanceGroups.findTop");
+        } else {
+            query = getEntityManager().createNamedQuery("AssistanceGroups.findAllParent");
+            query.setParameter("parentId", parentId);
+        }
 		return query.getResultList();
 	}
 	
