@@ -31,6 +31,15 @@ civsApp.config(function($routeProvider, $httpProvider) {
 			}
 		}
 	}).
+	when('/admin/:action/:id', {
+		controller: "AdminCtrl",
+		templateUrl: 'view/admin.html',
+		resolve: {
+			chechAuth: function(CheckAuth) {
+				return CheckAuth();
+			}
+		}
+	}).
 	when('/:action', {
 		controller: "MainCtrl",
 		templateUrl: 'view/main.html',
@@ -98,11 +107,11 @@ civsApp.factory("AgFactory", function($http) {
 		apiUrl: "/core/s/ags/"
 	};
 	
-	ag.getList = function(callback) {
- 		$http.get(this.config.apiUrl + 'list').success(callback);
+	ag.getList = function(parentId, callback) {
+ 		$http.get(this.config.apiUrl + 'list/' + parentId).success(callback);
  	};
- 	ag.createGroup = function(groupName, callback) {
- 		var p = { name: groupName };
+ 	ag.createGroup = function(groupName, parentId, callback) {
+ 		var p = { name: groupName, parentId: parentId };
  		$http.put(this.config.apiUrl + 'create', p).success(callback);
  	};
  	ag.removeGroup = function(groupId, callback) {

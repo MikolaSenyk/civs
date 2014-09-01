@@ -9,12 +9,13 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
 	$scope.title = "Адмін панель";
  	$scope.subTitle = "режим адміністратора";
  	$scope.action = $route.current.params.action || 'dashboard';
- 	
+ 	$scope.id = $route.current.params.id;
 
  	// add auth block
  	$scope.auth = AuthFactory.getAuthInfo('view/main/auth_panel.html');
 
  	if ( AuthFactory.isAdmin() ) {
+ 		console.log('action=' + $scope.action + ', id=' + $scope.id);
  		$scope['isActive_'+$scope.action] = true;
 
  		if ( $scope.action == "dashboard" ) {
@@ -81,12 +82,17 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  			// assistance groups
  			$scope.view = 'view/admin/groups.html';
  			$scope.groupList = [];
+ 			$scope.parentGroup = {};
+ 			$scope.hasParentGroup = false;
  			$scope.inAddForm = false;
  			$scope.error = '';
+ 			//$scope.parentGroupId = $scope.id || -1; // default as null but numeric
  			// load groups
- 			AgFactory.getList(function (json) {
+ 			AgFactory.getList($scope.id || 0, function (json) {
  				if ( json.success ) {
  					$scope.groupList = json.items;
+ 					$scope.hasParentGroup = json.hasParent;
+ 					$scope.parentGroup = json.parent;
  				}
  			});
  			$scope.showAddGroup = function() {
@@ -102,7 +108,7 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  			};
  			$scope.createGroup = function() {
  				$scope.error = '';	
- 				AgFactory.createGroup($scope.currGroup.name, function (json) {
+ 				AgFactory.createGroup($scope.currGroup.name, $scope.id || 0, function (json) {
  					if ( json.success ) {
  						$scope.groupList.push(json);
  						$scope.inAddForm = false;
