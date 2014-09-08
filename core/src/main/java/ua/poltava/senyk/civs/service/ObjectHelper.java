@@ -8,11 +8,13 @@ import net.sf.json.JSONObject;
 import ua.poltava.senyk.civs.model.Assistance;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
 import ua.poltava.senyk.civs.model.Letter;
+import ua.poltava.senyk.civs.model.RecommendedPrice;
 import ua.poltava.senyk.civs.model.UploadedImage;
 import ua.poltava.senyk.civs.model.User;
 import ua.poltava.senyk.civs.model.dto.AssistanceDto;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
 import ua.poltava.senyk.civs.model.dto.LetterDto;
+import ua.poltava.senyk.civs.model.dto.RecommendedPriceDto;
 import ua.poltava.senyk.civs.model.dto.UploadedImageDto;
 import ua.poltava.senyk.civs.model.dto.UserDto;
 import ua.poltava.senyk.civs.utils.JsonHelper;
@@ -78,6 +80,8 @@ public class ObjectHelper {
 		AssistanceDto o = new AssistanceDto();
 		if ( assistance != null ) {
 			o.setId(assistance.getId());
+            // FIXME add group
+            
 			o.setCreateTime(assistance.getCreateTime());
 			o.setDescription(assistance.getDescription());
 			o.setApproved(assistance.isApproved());
@@ -110,6 +114,21 @@ public class ObjectHelper {
             o.setUser(getUser(img.getUser()));
             o.setFolder(img.getFolder());
             o.setExtension(img.getExtension());
+            o.setSuccess(true);
+        }
+        return o;
+    }
+    
+    public RecommendedPriceDto getRecommendedPrice(RecommendedPrice price) {
+        RecommendedPriceDto o = new RecommendedPriceDto();
+        if ( price != null ) {
+            o.setId(price.getId());
+            o.setGroup(getAssistanceGroup(price.getGroup()));
+            o.setName(price.getName());
+            o.setMeasure(price.getMeasure());
+            o.setGradeOne(price.getGradeOne());
+            o.setGradeTwo(price.getGradeTwo());
+            o.setOutOfSeason(price.getOutOfSeason());
             o.setSuccess(true);
         }
         return o;

@@ -13,6 +13,3 @@ INSERT INTO `users`
 INSERT INTO `assistance_groups` (id, name) VALUES
 (2, 'Техніка'),
 (3, 'Ліки');
-
-INSERT INTO `assistances` (user_id, group_id, description) VALUES
-(2, 3, 'Віддам у добрі руки пакунок ліків.');

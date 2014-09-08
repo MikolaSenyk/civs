@@ -13,7 +13,8 @@
     <class>ua.poltava.senyk.civs.model.AssistanceGroup</class>
     <class>ua.poltava.senyk.civs.model.Assistance</class>
     <class>ua.poltava.senyk.civs.model.AssistanceGroupLink</class>
-    <class>ua.poltava.senyk.civs.model.Letter</class>
+    <class>ua.poltava.senyk.civs.model.Letter</class>init.  
+    <class>ua.poltava.senyk.civs.model.RecommendedPrice</class>
     
     <properties>
 

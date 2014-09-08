@@ -9,7 +9,9 @@ CREATE DATABASE `civs`
 USE `civs`;
 
 DROP TABLE IF EXISTS `letters`;
+DROP TABLE IF EXISTS `assistence_group_links`;
 DROP TABLE IF EXISTS `assistances`;
+DROP TABLE IF EXISTS `prices`;
 DROP TABLE IF EXISTS `assistance_groups`;
 DROP TABLE IF EXISTS `images`;
 DROP TABLE IF EXISTS `users`;
@@ -46,23 +48,45 @@ CREATE TABLE `images` (
 CREATE TABLE `assistance_groups` (
   `id` bigint(20) NOT NULL auto_increment,
   `name` varchar(32) NOT NULL,
-  `read_only` bool NOT NULL default 0,
+  `level` int(10) NOT NULL default 1,
+  `parent_id` bigint(20),
   PRIMARY KEY  (`id`),
-  CONSTRAINT `u_ag_name` UNIQUE KEY (`name`)
+  CONSTRAINT `u_ag_name` UNIQUE KEY (`name`),
+  CONSTRAINT `ag_parent_key` FOREIGN KEY (`parent_id`) REFERENCES assistance_groups(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB COMMENT="Groups of assistance";
+
+CREATE TABLE `prices` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `group_id` bigint(20) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `measure` varchar(16),
+  `grade_one` decimal(10,2),
+  `grade_two` decimal(10,2),
+  `out_of_season` decimal(10,2),
+  PRIMARY KEY  (`id`),
+  CONSTRAINT `pr_group_key` FOREIGN KEY (`group_id`) REFERENCES assistance_groups(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB COMMENT="Recommended prices for assistance in groups";
 
 CREATE TABLE `assistances` (
   `id` bigint(20) NOT NULL auto_increment,
   `user_id` bigint(20) NOT NULL,
   `create_time` timestamp NOT NULL default NOW(),
-  `group_id` bigint(20) NOT NULL,
   `description` varchar(1024) NOT NULL,
   `approved` bool NOT NULL default 0,
   `enabled` bool NOT NULL default 1,
   PRIMARY KEY  (`id`),
-  CONSTRAINT `a_user_key` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT `a_group_key` FOREIGN KEY (`group_id`) REFERENCES assistance_groups(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT `a_user_key` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB COMMENT="Assistances (kind of help) from registered users";
+
+CREATE TABLE `assistance_group_links` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `assistance_id` bigint(20) NOT NULL,
+  `group_id` bigint(20) NOT NULL,
+  PRIMARY KEY  (`id`),
+  CONSTRAINT `agl_uni` UNIQUE KEY (`assistance_id`, `group_id`),
+  CONSTRAINT `agl_assistance_key` FOREIGN KEY (`assistance_id`) REFERENCES assistances(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `agl_group_key` FOREIGN KEY (`group_id`) REFERENCES assistance_groups(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB COMMENT="Links between Assistances and groups";
 
 CREATE TABLE `letters` (
   `id` bigint(20) NOT NULL auto_increment,

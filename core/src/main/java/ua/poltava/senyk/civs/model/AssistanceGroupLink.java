@@ -21,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "assistance_group_links")
-public class AssistanceGroupLink  implements Serializable {
+public class AssistanceGroupLink implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	// fields

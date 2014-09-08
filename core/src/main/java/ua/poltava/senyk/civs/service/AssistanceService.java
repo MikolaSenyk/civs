@@ -12,12 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.poltava.senyk.civs.config.Base;
 import ua.poltava.senyk.civs.dao.AssistanceDao;
 import ua.poltava.senyk.civs.dao.AssistanceGroupDao;
+import ua.poltava.senyk.civs.dao.RecommendedPriceDao;
 import ua.poltava.senyk.civs.dao.UserDao;
 import ua.poltava.senyk.civs.model.Assistance;
 import ua.poltava.senyk.civs.model.AssistanceGroup;
+import ua.poltava.senyk.civs.model.RecommendedPrice;
 import ua.poltava.senyk.civs.model.User;
 import ua.poltava.senyk.civs.model.dto.AssistanceDto;
 import ua.poltava.senyk.civs.model.dto.AssistanceGroupDto;
+import ua.poltava.senyk.civs.model.dto.RecommendedPriceDto;
 
 /**
  * Service for assistances and groups
@@ -33,10 +36,13 @@ public class AssistanceService {
 	private AssistanceDao _assistanceDao;
     @Autowired
     private UserDao _userDao;
+    @Autowired
+    private RecommendedPriceDao _priceDao;
     
     // Constants
     public static final int LAST_ASSISTANCES_COUNT = 10;
 	
+    
 	// Assistance Groups
 	
 	@Transactional(rollbackFor = Exception.class)
@@ -93,7 +99,56 @@ public class AssistanceService {
 			throw new Exception("Group isn't empty");
 		_groupDao.removeGroup(id);
 	}
+    
+    
+    // Recommended Prices
+    
+    @Transactional(rollbackFor = Exception.class)
+    public RecommendedPriceDto createPrice(long groupId, String name, String measure, double gradeOne, double gradeTwo, double outOfSeason) throws Exception {
+        AssistanceGroup group = _groupDao.getById(groupId);
+        if ( group == null ) throw new Exception("Group by ID=" + groupId + " not found");
+        RecommendedPrice price = new RecommendedPrice(group, name);
+        price.setMeasure(measure);
+        price.setGradeOne(gradeOne);
+        price.setGradeTwo(gradeTwo);
+        price.setOutOfSeason(outOfSeason);
+        _priceDao.addObject(price);
+        ObjectHelper helper = new ObjectHelper();
+        return helper.getRecommendedPrice(price);
+    }
+    
+    @Transactional(rollbackFor = Exception.class)
+    public void updatePrice(RecommendedPriceDto priceDto) throws Exception {
+        long groupId = priceDto.getGroup().getId();
+        AssistanceGroup group = _groupDao.getById(groupId);
+        if ( group == null ) throw new Exception("Group by ID=" + groupId + " not found");
+        
+        RecommendedPrice price = _priceDao.getObject(priceDto.getId());
+        price.setGroup(group);
+        price.setName(priceDto.getName());
+        price.setMeasure(priceDto.getMeasure());
+        price.setGradeOne(priceDto.getGradeOne());
+        price.setGradeTwo(priceDto.getGradeTwo());
+        price.setOutOfSeason(priceDto.getOutOfSeason());
+        _priceDao.updateObject(price);
+    }
+    
+    @Transactional(rollbackFor = Exception.class)
+    public void removePrice(long priceId) throws Exception {
+        _priceDao.deleteObject(priceId);
+    }
+    
+    @Transactional(rollbackFor = Exception.class)
+    public List<RecommendedPriceDto> findPrices(long groupId) throws Exception {
+        List<RecommendedPriceDto> res = new ArrayList<RecommendedPriceDto>();
+        ObjectHelper helper = new ObjectHelper();
+        for (RecommendedPrice price: _priceDao.findByGroup(groupId)) {
+            res.add(helper.getRecommendedPrice(price));
+        }
+        return res;
+    }
 	
+    
 	// Assistances
     
     @Transactional(rollbackFor = Exception.class)
