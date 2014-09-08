@@ -1,7 +1,7 @@
 <h2 ng-hide="hasParentGroup">Розділи допомоги</h2>
 <h2 ng-show="hasParentGroup">Розділ "{{ parentGroup.name }}"</h2>
 
-<div class="col-md-6 col-lg-6">
+<div class="col-md-4 col-lg-4">
 	<table class="table table-hover">
 		<div ng-show="error" class="alert alert-warning">{{ error }}</div>
 		<p ng-show="hasParentGroup">
@@ -12,13 +12,14 @@
 		<thead>
 			<tr>
 				<th>Розділ</th>
-				<th>Дія</th>
+				<th colspan="2">Дії</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="group in groupList">
+			<tr ng-repeat="group in groupList" id="grLine{{group.id}}">
 				<td><p><a href="#/admin/groups/{{group.id}}">{{ group.name }}</a></p></td>
-				<td><a ng-hide="group.readOnly" ng-click="removeGroup($index)">Видалити</a></td>
+				<td><a ng-click="showGroupPrices($index)">Ціни</a></td>
+				<td><a ng-click="removeGroup($index)" title="Видалити">[ X ]</a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -32,4 +33,58 @@
 		<button type="button" class="btn btn-default" ng-click="hideAddGroup()">Відмінити</button>
 	</form>
 </div>
-
+<div ng-show="priceDetails.show" class="col-md-8 col-lg-8">
+	<h3>{{priceDetails.group.name}}</h3>
+	<p>Рекомендовані ціни</p>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th rowspan="2">Назва</th>
+				<th rowspan="2">Одиниці виміру</th>
+				<th colspan="3" class="text-center">Одиниця в балах (рекомендовано)</th>
+				<th rowspan="2" colspan="2">Дії</th>
+			</tr>
+			<tr>
+				<th>Сорт 1</th>
+				<th>Сорт 2</th>
+				<th>Не сезон</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="priceItem in priceDetails.priceList">
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>edit</td>
+				<td>del</td>
+			</tr>
+		</tbody>
+	</table>
+	<button ng-hide="priceDetails.inAddForm" class="btn btn-primary" ng-click="priceDetails.showAddPrice()">Додати позицію</button>
+	<form ng-show="priceDetails.inAddForm" role="form" ng-submit="priceDetails.createPrice()">
+		<div class="form-group">
+		  <label for="priceName">Вид продукції / Товару / Послуг</label>
+		  <input type="text" class="form-control" id="priceName" required ng-model="priceDetails.item.name" placeholder="Введіть назву">
+		</div>
+		<div class="form-group">
+		  <label for="priceMeasure">Одиниця виміру</label>
+		  <input type="text" class="form-control" id="priceMeasure" ng-model="priceDetails.item.measure" placeholder="Введіть одиницю виміру">
+		</div>
+		<div class="form-group">
+		  <label for="priceGradeOne">Ціна для 1-го сорту</label>
+		  <input type="text" class="form-control" id="priceGradeOne" ng-model="priceDetails.item.gradeOne" placeholder="Введіть ціну для першого сорту">
+		</div>
+		<div class="form-group">
+		  <label for="priceGradeTwo">Ціна для 2-го сорту</label>
+		  <input type="text" class="form-control" id="priceGradeTwo" ng-model="priceDetails.item.gradeTwo" placeholder="Введіть ціну для другого сорту">
+		</div>
+		<div class="form-group">
+		  <label for="priceOutOfSeason">Ціна в не сезон</label>
+		  <input type="text" class="form-control" id="priceOutOfSeason" ng-model="priceDetails.item.outOfSeason" placeholder="Введіть ціну в не сезон">
+		</div>
+		<button type="submit" class="btn btn-primary">Зберегти</button>
+		<button type="button" class="btn btn-default" ng-click="priceDetails.hideAddPrice()">Відмінити</button>
+	</form>
+</div>

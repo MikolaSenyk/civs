@@ -85,6 +85,7 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  			$scope.parentGroup = {};
  			$scope.hasParentGroup = false;
  			$scope.inAddForm = false;
+ 			$scope.priceDetails = {};
  			$scope.error = '';
  			//$scope.parentGroupId = $scope.id || -1; // default as null but numeric
  			// load groups
@@ -126,6 +127,17 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  						$scope.error = json.messageText;
  					}
  				});
+ 			};
+ 			$scope.showGroupPrices = function(index) {
+ 				$scope.priceDetails.group = $scope.groupList[index];
+ 				$scope.priceDetails.show = true;
+ 				$scope.priceDetails.showAddPrice = function() {
+ 					$scope.priceDetails.inAddForm = true;
+ 					
+ 				};
+ 				$scope.priceDetails.hideAddPrice = function() {
+ 					$scope.priceDetails.inAddForm = false;
+ 				};
  			};
  		} else if ( $scope.action == "assistances" ) {
  			// assistances
