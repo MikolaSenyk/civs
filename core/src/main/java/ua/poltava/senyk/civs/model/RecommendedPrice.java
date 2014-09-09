@@ -42,7 +42,7 @@ public class RecommendedPrice implements Serializable {
     private AssistanceGroup group;
     @Column(name = "name", nullable = false, length = 64)
 	private String name;
-    @Column(name = "measure")
+    @Column(name = "measure", nullable = true, length = 16)
 	private String measure;
     @Column(name = "grade_one")
     private double gradeOne;

@@ -134,4 +134,34 @@ public class ObjectHelper {
         return o;
     }
     
+    public void UpdateRecommendedPrice(RecommendedPriceDto o, String body) {
+        JSONObject json = JSONObject.fromObject(body);
+        // set ID if presented
+        if ( json.containsKey("id") ) o.setId(json.getLong("id"));
+
+        // optional fields
+        if ( json.containsKey("measure") ) o.setMeasure(json.getString("measure"));
+        if ( json.containsKey("gradeOne") ) o.setGradeOne(json.getDouble("gradeOne"));
+        if ( json.containsKey("gradeTwo") ) o.setGradeTwo(json.getDouble("gradeTwo"));
+        if ( json.containsKey("outOfSeason") ) o.setOutOfSeason(json.getDouble("outOfSeason"));
+        
+        // required fields
+        if ( !json.containsKey("groupId") ) {
+            o.setSuccess(false);
+            o.setMessageText("Field group Id is missing");
+            return;
+        }
+        if ( o.getGroup() == null ) {
+            o.setGroup(new AssistanceGroupDto());
+        }
+        o.getGroup().setId(json.getLong("groupId"));
+        
+        if ( !json.containsKey("name") ) {
+            o.setSuccess(false);
+            o.setMessageText("Field 'name' is missing");
+            return;
+        }
+        o.setName(json.getString("name"));
+    }
+    
 }

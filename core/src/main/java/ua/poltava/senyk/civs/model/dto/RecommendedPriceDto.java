@@ -6,6 +6,8 @@
 
 package ua.poltava.senyk.civs.model.dto;
 
+import net.sf.json.JSONObject;
+
 /**
  * Data Transfer Object for recommended price
  * @author Msenyk
@@ -79,6 +81,19 @@ public class RecommendedPriceDto extends MessageDto {
 
     public void setOutOfSeason(double outOfSeason) {
         this.outOfSeason = outOfSeason;
+    }
+
+    @Override
+    public JSONObject getJSON() {
+        JSONObject json = super.getJSON();
+        json.put("id", getId());
+        json.put("groupId", getGroup().getId());
+        json.put("name", getName());
+        json.put("measure", getMeasure());
+        json.put("gradeOne", getGradeOne());
+        json.put("gradeTwo", getGradeTwo());
+        json.put("outOfSeason", getOutOfSeason());
+        return json;
     }
     
 }

@@ -7,6 +7,7 @@
 package ua.poltava.senyk.civs.dao;
 
 import java.util.List;
+import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import ua.poltava.senyk.civs.model.RecommendedPrice;
 
@@ -23,7 +24,9 @@ public class RecommendedPriceDao extends Dao<RecommendedPrice> {
     
     @SuppressWarnings("unchecked")
     public List<RecommendedPrice> findByGroup(long groupId) throws Exception {
-        return getEntityManager().createNamedQuery("RecommendedPrices.findByGroup").getResultList();
+        Query query = getEntityManager().createNamedQuery("RecommendedPrices.findByGroup");
+        query.setParameter("groupId", groupId);
+        return query.getResultList();
     }
     
 }
