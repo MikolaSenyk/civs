@@ -52,13 +52,13 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="priceItem in priceDetails.priceList">
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>edit</td>
-				<td>del</td>
+				<td>{{priceItem.name}}</td>
+				<td>{{priceItem.measure}}</td>
+				<td>{{priceItem.gradeOne||''}}</td>
+				<td>{{priceItem.gradeTwo||''}}</td>
+				<td>{{priceItem.outOfSeason||''}}</td>
+				<td><a ng-click="priceDetails.editPrice($index)">Редагувати</a></td>
+				<td><a ng-click="priceDetails.removePrice($index)" title="Видалити">[ x ]</a></td>
 			</tr>
 		</tbody>
 	</table>

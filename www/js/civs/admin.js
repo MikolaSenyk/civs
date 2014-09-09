@@ -5,7 +5,7 @@
 
 // FIXME move somewhere
 
-civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AgFactory, AssistanceFactory, LetterFactory) {
+civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, AuthFactory, UsersFactory, AgFactory, AssistanceFactory, LetterFactory, PriceFactory) {
 	$scope.title = "Адмін панель";
  	$scope.subTitle = "режим адміністратора";
  	$scope.action = $route.current.params.action || 'dashboard';
@@ -129,14 +129,56 @@ civsApp.controller('AdminCtrl', function ($scope, $route, $location, $http, Auth
  				});
  			};
  			$scope.showGroupPrices = function(index) {
+ 				$scope.priceDetails.inAddForm = false;
  				$scope.priceDetails.group = $scope.groupList[index];
+ 				$scope.priceDetails.groupList = [];
+ 				$scope.priceDetails.item = {};
+ 				PriceFactory.getList($scope.priceDetails.group.id, function(json) {
+ 					if ( json.success ) {
+ 						$scope.priceDetails.priceList = json.items;
+ 					} else { window.alert("Oops!") }
+ 				});
  				$scope.priceDetails.show = true;
  				$scope.priceDetails.showAddPrice = function() {
+ 					$scope.priceDetails.item = {};
  					$scope.priceDetails.inAddForm = true;
- 					
  				};
  				$scope.priceDetails.hideAddPrice = function() {
  					$scope.priceDetails.inAddForm = false;
+ 				};
+ 				$scope.priceDetails.createPrice = function() {
+ 					if ( $scope.priceDetails.item.id ) {
+ 						PriceFactory.updatePrice($scope.priceDetails.item, function(json) {
+	 						if ( json.success ) {
+	 							$scope.priceDetails.hideAddPrice();
+	 							for (var i in $scope.priceDetails.priceList) {
+	 								var priceItem = $scope.priceDetails.priceList[i];
+	 								if ( priceItem.id == $scope.priceDetails.item.id ) {
+	 									jsTools.copyFields($scope.priceDetails.item, priceItem);
+	 									break;
+	 								}
+	 							}
+	 						} else { window.alert("Oops!") }
+	 					});
+ 					} else {
+	 					PriceFactory.createPrice($scope.priceDetails.item, $scope.priceDetails.group.id, function(json) {
+	 						if ( json.success ) {
+	 							$scope.priceDetails.priceList.push($scope.priceDetails.item);
+	 							$scope.priceDetails.hideAddPrice();
+	 						} else { window.alert("Oops!") }
+	 					});
+ 					}
+ 				};
+ 				$scope.priceDetails.editPrice = function(index) {
+ 					jsTools.copyFields($scope.priceDetails.priceList[index], $scope.priceDetails.item);
+ 					$scope.priceDetails.inAddForm = true;
+ 				};
+ 				$scope.priceDetails.removePrice = function(index) {
+ 					PriceFactory.removePrice($scope.priceDetails.priceList[index].id, function (json) {
+ 						if ( json.success ) {
+	 						$scope.priceDetails.priceList.splice(index, 1);
+	 					} else { window.alert("Oops!") }
+ 					});
  				};
  			};
  		} else if ( $scope.action == "assistances" ) {

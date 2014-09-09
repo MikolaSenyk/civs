@@ -121,6 +121,30 @@ civsApp.factory("AgFactory", function($http) {
 	return ag;
 });
 
+civsApp.factory("PriceFactory", function($http) {
+	var pf = {};
+	pf.config = {
+		apiUrl: "/core/s/prices/"
+	};
+	
+	pf.getList = function(groupId, callback) {
+ 		$http.get(this.config.apiUrl + 'list/' + groupId).success(callback);
+ 	};
+ 	pf.createPrice = function(item, groupId, callback) {
+ 		var p = { groupId: groupId, name: item.name, measure: item.measure, gradeOne: item.gradeOne, gradeTwo: item.gradeTwo, outOfSeason: item.outOfSeason };
+ 		$http.post(this.config.apiUrl + 'create', p).success(callback);
+ 	};
+ 	pf.updatePrice = function(item, callback) {
+ 		var p = { id: item.id, groupId: item.groupId, name: item.name, measure: item.measure, gradeOne: item.gradeOne, gradeTwo: item.gradeTwo, outOfSeason: item.outOfSeason };
+ 		$http.put(this.config.apiUrl + item.id + '/update', p).success(callback);
+ 	};
+ 	pf.removePrice = function(priceId, callback) {
+ 		$http.delete(this.config.apiUrl + priceId + '/remove').success(callback);
+ 	};
+
+	return pf;
+});
+
 civsApp.factory("AssistanceFactory", function ($http) {
 	var assistance = {};
 
